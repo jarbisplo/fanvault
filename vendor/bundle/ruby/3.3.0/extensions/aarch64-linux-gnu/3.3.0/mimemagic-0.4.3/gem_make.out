@@ -1,3 +1,0 @@
-current directory: /home/jroque/projects/fanvault/vendor/bundle/ruby/3.3.0/gems/mimemagic-0.4.3/ext/mimemagic
-/usr/bin/ruby3.3 -I/usr/lib/ruby/vendor_ruby -rrubygems /home/jroque/projects/fanvault/vendor/bundle/ruby/3.3.0/gems/rake-13.3.1/exe/rake RUBYARCHDIR\=/home/jroque/projects/fanvault/vendor/bundle/ruby/3.3.0/extensions/aarch64-linux-gnu/3.3.0/mimemagic-0.4.3 RUBYLIBDIR\=/home/jroque/projects/fanvault/vendor/bundle/ruby/3.3.0/extensions/aarch64-linux-gnu/3.3.0/mimemagic-0.4.3
-mkdir -p /home/jroque/projects/fanvault/vendor/bundle/ruby/3.3.0/extensions/aarch64-linux-gnu/3.3.0/mimemagic-0.4.3/mimemagic
