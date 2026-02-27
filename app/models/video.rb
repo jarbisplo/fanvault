@@ -47,11 +47,35 @@ class Video < ApplicationRecord
     user.active_subscription_for?(creator)
   end
 
+  def stream_url
+    # Prefer HLS if transcoded; fall back to direct file
+    hls_url.present? ? signed_hls_url : video_file.url
+  end
+
+  def hls_ready?
+    hls_url.present?
+  end
+
   def formatted_duration
     return '--:--' unless duration_seconds
     mm, ss = duration_seconds.divmod(60)
     hh, mm = mm.divmod(60)
     hh > 0 ? format('%02d:%02d:%02d', hh, mm, ss) : format('%02d:%02d', mm, ss)
+  end
+
+  def signed_hls_url(expires: 3600)
+    return nil unless hls_url.present? && ENV['AWS_ACCESS_KEY_ID'].present?
+    require 'aws-sdk-s3'
+    signer = Aws::S3::Presigner.new(
+      client: Aws::S3::Client.new(
+        region:      ENV.fetch('AWS_REGION', 'us-east-1'),
+        credentials: Aws::Credentials.new(ENV['AWS_ACCESS_KEY_ID'], ENV['AWS_SECRET_ACCESS_KEY'])
+      )
+    )
+    signer.presigned_url(:get_object, bucket: ENV['AWS_BUCKET'], key: hls_url, expires_in: expires)
+  rescue => e
+    Rails.logger.error "signed_hls_url failed: #{e.message}"
+    nil
   end
 
   def increment_views!

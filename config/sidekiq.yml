@@ -1,0 +1,6 @@
+:concurrency: 3
+:queues:
+  - [videos, 2]
+  - [default, 1]
+:timeout: 600
+:max_retries: 3

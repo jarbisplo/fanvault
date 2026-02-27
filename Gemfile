@@ -28,6 +28,7 @@ gem 'rolify'
 # File uploads
 gem 'carrierwave', '~> 3.0'
 gem 'fog-aws'
+gem 'aws-sdk-s3', '~> 1'
 gem 'mini_magick'           # video thumbnail processing
 
 # Payments

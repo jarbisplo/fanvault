@@ -3,16 +3,39 @@
   <!-- Player — edge to edge on mobile -->
   <div class="bg-black" style="aspect-ratio: 16/9;">
     <video
+      id="video-player"
       controls
       controlsList="nodownload"
       oncontextmenu="return false"
       class="w-full h-full"
       preload="metadata"
       playsinline
+      data-hls="<%= @video.hls_ready? ? @video.signed_hls_url : '' %>"
+      data-fallback="<%= @video.video_file.url %>"
     >
-      <source src="<%= @video.video_file.url %>" type="video/mp4">
     </video>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+  <script>
+    (function() {
+      const video  = document.getElementById('video-player');
+      const hlsSrc = video.dataset.hls;
+      const mp4Src = video.dataset.fallback;
+
+      if (hlsSrc && Hls.isSupported()) {
+        const hls = new Hls({ maxMaxBufferLength: 30, enableWorker: true });
+        hls.loadSource(hlsSrc);
+        hls.attachMedia(video);
+      } else if (hlsSrc && video.canPlayType('application/vnd.apple.mpegurl')) {
+        // Safari native HLS
+        video.src = hlsSrc;
+      } else if (mp4Src) {
+        // Fallback: direct mp4 (dev / pre-transcode)
+        video.src = mp4Src;
+      }
+    })();
+  </script>
 
   <!-- Title + meta -->
   <div class="px-5 pt-5 pb-4 border-b border-white/5">
