@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   end
 
   # Subscriber feed + video player
-  resources :videos, only: [:index, :show]
+  resources :videos, only: [:index, :show] do
+    member do
+      get 'hls/*hls_path', to: 'videos#hls_proxy', as: :hls, format: false
+    end
+  end
 
   # Stripe webhooks
   mount Pay::Engine, at: '/pay', as: 'pay_engine'

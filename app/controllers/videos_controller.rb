@@ -20,11 +20,40 @@ class VideosController < ApplicationController
     @up_next = Video.published.where.not(id: @video.id).recent.limit(4) if @up_next.empty?
   end
 
+  def hls_proxy
+    @video = Video.published.find(params[:id])
+    hls_path = params[:hls_path]
+
+    # Build the S3 key from the stored hls_url prefix
+    prefix   = @video.hls_url.sub('/master.m3u8', '')
+    s3_key   = "#{prefix}/#{hls_path}"
+
+    signed_url = generate_signed_url(s3_key)
+    return head :not_found unless signed_url
+
+    redirect_to signed_url, allow_other_host: true, status: :found
+  end
+
   private
 
   def require_access!
     unless current_user.can_watch?
       redirect_to pricing_path, alert: 'Subscribe to access the videos.'
     end
+  end
+
+  def generate_signed_url(s3_key, expires: 3600)
+    return nil unless ENV['AWS_ACCESS_KEY_ID'].present?
+    require 'aws-sdk-s3'
+    signer = Aws::S3::Presigner.new(
+      client: Aws::S3::Client.new(
+        region:      ENV.fetch('AWS_REGION', 'us-east-1'),
+        credentials: Aws::Credentials.new(ENV['AWS_ACCESS_KEY_ID'], ENV['AWS_SECRET_ACCESS_KEY'])
+      )
+    )
+    signer.presigned_url(:get_object, bucket: ENV['AWS_BUCKET'], key: s3_key, expires_in: expires)
+  rescue => e
+    Rails.logger.error "HLS sign failed for #{s3_key}: #{e.message}"
+    nil
   end
 end
