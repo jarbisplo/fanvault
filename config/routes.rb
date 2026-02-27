@@ -19,7 +19,8 @@ Rails.application.routes.draw do
   # Stripe webhooks
   mount Pay::Engine, at: '/pay', as: 'pay_engine'
 
-  # Pricing / subscribe
+  # Preview / Pricing / subscribe
+  get  '/preview',   to: 'pages#preview',   as: :preview
   get  '/pricing',   to: 'pages#pricing',   as: :pricing
   post '/subscribe', to: 'subscriptions#create', as: :subscribe
 
