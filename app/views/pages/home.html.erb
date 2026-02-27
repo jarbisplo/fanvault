@@ -4,10 +4,10 @@
   <!-- Hero slideshow with Ken Burns pan effect -->
   <div id="hero-slides" class="absolute inset-0">
     <% [
-      image_path("dubon-left-field.png"),
-      image_path("dubon-shortstop.png"),
-      image_path("dubon-2x-golden-glove.png"),
-      image_path("dubon-golden-glove.png")
+      image_path("dubon-left-field.webp"),
+      image_path("dubon-shortstop.webp"),
+      image_path("dubon-2x-golden-glove.webp"),
+      image_path("dubon-golden-glove.webp")
     ].each_with_index do |src, i| %>
       <div class="hero-slide absolute inset-0 overflow-hidden <%= i == 0 ? 'active' : '' %>">
         <img src="<%= src %>"
