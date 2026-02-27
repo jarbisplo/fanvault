@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dubon Training</title>
+  <title>Mauricio Dubon</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
@@ -16,7 +16,7 @@
   <nav class="bg-zinc-900 border-b border-zinc-600/40/50 sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between">
       <%= link_to root_path, class: "text-lg font-extrabold tracking-tight text-white" do %>
-        Dubon<span class="text-orange-500">Training</span>
+        Mauricio<span class="text-red-600">Dubon</span>
       <% end %>
 
       <div class="flex items-center gap-3 text-sm font-medium">
@@ -31,7 +31,7 @@
         <% else %>
           <%= link_to "Sign in", new_user_session_path, class: "text-zinc-400 hover:text-white" %>
           <%= link_to "Get Access", pricing_path,
-              class: "bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full transition font-semibold text-sm" %>
+              class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full transition font-semibold text-sm" %>
         <% end %>
       </div>
     </div>

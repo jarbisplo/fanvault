@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin — Dubon Training</title>
+  <title>Admin — Mauricio Dubon</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
@@ -15,25 +15,25 @@
   <!-- Sidebar -->
   <aside class="w-60 bg-zinc-800 border-r border-zinc-600/40/50 flex flex-col shrink-0">
     <div class="px-6 py-5 border-b border-zinc-600/40/50">
-      <p class="text-lg font-bold text-white">Dubon<span class="text-orange-500">Training</span></p>
+      <p class="text-lg font-bold text-white">Mauricio<span class="text-red-600">Dubon</span></p>
       <p class="text-xs text-zinc-500 mt-0.5">Admin Panel</p>
     </div>
 
     <nav class="flex-1 px-3 py-4 space-y-1 text-sm font-medium">
       <%= link_to admin_root_path,
-          class: "flex items-center gap-3 px-3 py-2.5 rounded-xl #{controller_name == 'dashboard' ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}" do %>
+          class: "flex items-center gap-3 px-3 py-2.5 rounded-xl #{controller_name == 'dashboard' ? 'bg-red-600/10 text-red-400 border border-red-600/20' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}" do %>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
         Dashboard
       <% end %>
 
       <%= link_to admin_videos_path,
-          class: "flex items-center gap-3 px-3 py-2.5 rounded-xl #{controller_name == 'videos' ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}" do %>
+          class: "flex items-center gap-3 px-3 py-2.5 rounded-xl #{controller_name == 'videos' ? 'bg-red-600/10 text-red-400 border border-red-600/20' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}" do %>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
         Videos
       <% end %>
 
       <%= link_to admin_subscribers_path,
-          class: "flex items-center gap-3 px-3 py-2.5 rounded-xl #{controller_name == 'subscribers' ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}" do %>
+          class: "flex items-center gap-3 px-3 py-2.5 rounded-xl #{controller_name == 'subscribers' ? 'bg-red-600/10 text-red-400 border border-red-600/20' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}" do %>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         Subscribers
       <% end %>
@@ -55,7 +55,7 @@
         <%= controller_name.titleize %>
       </h1>
       <%= link_to "Upload Video", new_admin_video_path,
-          class: "bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition" %>
+          class: "bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition" %>
     </header>
 
     <% if notice.present? %>

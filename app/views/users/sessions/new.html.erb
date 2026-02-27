@@ -2,7 +2,7 @@
   <div class="w-full max-w-sm">
     <div class="text-center mb-8">
       <h1 class="text-3xl font-bold text-white">Welcome back</h1>
-      <p class="text-zinc-500 text-sm mt-2">Sign in to your Dubon Training account</p>
+      <p class="text-zinc-500 text-sm mt-2">Sign in to your Mauricio Dubon account</p>
     </div>
 
     <div class="bg-zinc-800 rounded-3xl border border-zinc-600/40 p-8">
@@ -10,13 +10,13 @@
         <div>
           <%= f.label :email, "Email", class: "block text-sm font-medium text-zinc-300 mb-2" %>
           <%= f.email_field :email, autofocus: true, autocomplete: "email",
-              class: "w-full bg-zinc-800 border border-zinc-600/40 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
+              class: "w-full bg-zinc-800 border border-zinc-600/40 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent" %>
         </div>
 
         <div>
           <%= f.label :password, "Password", class: "block text-sm font-medium text-zinc-300 mb-2" %>
           <%= f.password_field :password, autocomplete: "current-password",
-              class: "w-full bg-zinc-800 border border-zinc-600/40 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
+              class: "w-full bg-zinc-800 border border-zinc-600/40 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent" %>
         </div>
 
         <div class="flex items-center justify-between text-sm">
@@ -24,16 +24,16 @@
             <%= f.check_box :remember_me %>
             Remember me
           </label>
-          <%= link_to "Forgot password?", new_user_password_path, class: "text-orange-400 hover:text-orange-300" %>
+          <%= link_to "Forgot password?", new_user_password_path, class: "text-red-400 hover:text-red-300" %>
         </div>
 
         <%= f.submit "Sign in",
-            class: "w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-2xl transition cursor-pointer" %>
+            class: "w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 rounded-2xl transition cursor-pointer" %>
       <% end %>
 
       <p class="text-center text-zinc-500 text-sm mt-6">
         No account yet?
-        <%= link_to "Sign up", new_user_registration_path, class: "text-orange-400 font-semibold hover:text-orange-300" %>
+        <%= link_to "Sign up", new_user_registration_path, class: "text-red-400 font-semibold hover:text-red-300" %>
       </p>
     </div>
   </div>

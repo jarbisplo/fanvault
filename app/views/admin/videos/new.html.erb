@@ -16,18 +16,18 @@
       <div>
         <%= f.label :title, "Title", class: "block text-sm font-semibold text-zinc-300 mb-2" %>
         <%= f.text_field :title, placeholder: "e.g. Pitching mechanics — full breakdown",
-            class: "w-full border border-zinc-600/40 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
+            class: "w-full border border-zinc-600/40 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent" %>
       </div>
 
       <div>
         <%= f.label :description, "Description (optional)", class: "block text-sm font-semibold text-zinc-300 mb-2" %>
         <%= f.text_area :description, rows: 3, placeholder: "What does this video cover?",
-            class: "w-full border border-zinc-600/40 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none" %>
+            class: "w-full border border-zinc-600/40 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent resize-none" %>
       </div>
 
       <div>
         <%= f.label :video_file, "Video File", class: "block text-sm font-semibold text-zinc-300 mb-2" %>
-        <label id="video-drop-zone" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-zinc-600/40 rounded-xl cursor-pointer hover:border-orange-500 transition bg-black">
+        <label id="video-drop-zone" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-zinc-600/40 rounded-xl cursor-pointer hover:border-red-600 transition bg-black">
           <p class="text-zinc-500 text-sm" id="video-label">Click to select video file</p>
           <p class="text-gray-300 text-xs mt-1">MP4, MOV, MKV — max 5 GB</p>
           <%= f.file_field :video_file, accept: "video/*", class: "hidden", id: "video-input" %>
@@ -37,11 +37,11 @@
       <div>
         <%= f.label :thumbnail, "Thumbnail (optional)", class: "block text-sm font-semibold text-zinc-300 mb-2" %>
         <%= f.file_field :thumbnail, accept: "image/*",
-            class: "block w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-orange-500/10 file:text-orange-400 hover:file:bg-orange-500/10 file:font-medium" %>
+            class: "block w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-red-600/10 file:text-red-400 hover:file:bg-red-600/10 file:font-medium" %>
       </div>
 
       <%= f.submit "Upload Video",
-          class: "w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-2xl transition cursor-pointer" %>
+          class: "w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 rounded-2xl transition cursor-pointer" %>
     <% end %>
   </div>
 </div>

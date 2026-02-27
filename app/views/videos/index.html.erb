@@ -14,15 +14,15 @@
     <% else %>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <% @videos.each do |video| %>
-          <%= link_to video_path(video), class: "group bg-zinc-800 rounded-2xl overflow-hidden border border-zinc-600/40/50 hover:border-orange-500/50 transition" do %>
+          <%= link_to video_path(video), class: "group bg-zinc-800 rounded-2xl overflow-hidden border border-zinc-600/40/50 hover:border-red-600/50 transition" do %>
             <!-- Thumbnail -->
             <div class="aspect-video bg-zinc-800 relative overflow-hidden">
               <% if video.thumbnail.present? %>
                 <img src="<%= video.thumbnail.url %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" alt="">
               <% else %>
                 <div class="w-full h-full flex items-center justify-center">
-                  <div class="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center">
-                    <svg class="w-5 h-5 text-orange-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                  <div class="w-12 h-12 bg-red-600/20 rounded-full flex items-center justify-center">
+                    <svg class="w-5 h-5 text-red-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
                     </svg>
                   </div>
@@ -36,7 +36,7 @@
             </div>
             <!-- Info -->
             <div class="p-4">
-              <h3 class="font-semibold text-white group-hover:text-orange-400 transition text-sm line-clamp-2 mb-1.5">
+              <h3 class="font-semibold text-white group-hover:text-red-400 transition text-sm line-clamp-2 mb-1.5">
                 <%= video.title %>
               </h3>
               <p class="text-zinc-500 text-xs"><%= video.created_at.strftime("%B %d, %Y") %></p>
