@@ -1,0 +1,13 @@
+module Creator
+  class BaseController < ApplicationController
+    before_action :authenticate_user!
+    before_action :require_creator!
+    layout 'creator'
+
+    private
+
+    def require_creator!
+      redirect_to root_path, alert: 'Access denied.' unless current_user.creator?
+    end
+  end
+end

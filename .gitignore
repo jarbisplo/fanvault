@@ -1,0 +1,14 @@
+.env
+*.env.*
+!.env.example
+/config/master.key
+/config/credentials/*.key
+/log/*
+/tmp/*
+/storage/*
+/public/assets
+/public/packs
+/public/packs-test
+node_modules/
+.byebug_history
+.DS_Store
