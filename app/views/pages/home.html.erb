@@ -1,32 +1,79 @@
 <!-- Hero -->
-<div class="text-center py-20">
-  <p class="text-blue-400 text-sm font-semibold tracking-widest uppercase mb-4">Exclusive Baseball Training</p>
-  <h1 class="text-5xl font-extrabold text-white leading-tight mb-6">
-    Train like the pros.<br>
-    <span class="text-blue-400">Watch the drills that actually work.</span>
-  </h1>
-  <p class="text-gray-400 text-xl max-w-xl mx-auto mb-10">
-    Private video library. New content every week. Cancel anytime.
-  </p>
-  <%= link_to "Get Access", pricing_path,
-      class: "inline-block bg-blue-600 hover:bg-blue-500 text-white text-lg font-semibold px-8 py-4 rounded-xl transition" %>
-</div>
+<section class="relative overflow-hidden min-h-[88vh] flex items-end">
+  <!-- Background image (placeholder — replace with real player photo) -->
+  <div class="absolute inset-0">
+    <img
+      src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1400&q=80"
+      alt="Baseball player"
+      class="w-full h-full object-cover object-top"
+    >
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+  </div>
 
-<!-- Features -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-  <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
-    <div class="text-3xl mb-3">🎥</div>
-    <h3 class="font-bold text-white mb-2">Pro Training Videos</h3>
-    <p class="text-gray-400 text-sm">Drills, mechanics, and breakdowns filmed up close — no fluff.</p>
+  <!-- Hero text -->
+  <div class="relative z-10 max-w-6xl mx-auto px-5 pb-16 w-full">
+    <p class="text-green-400 text-sm font-semibold tracking-widest uppercase mb-3">Exclusive Baseball Training</p>
+    <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-5 max-w-2xl">
+      Train like the pros.<br>
+      <span class="text-green-400">Every rep counts.</span>
+    </h1>
+    <p class="text-gray-300 text-lg max-w-lg mb-8">
+      Private video library. Real drills. New content every week. Cancel anytime.
+    </p>
+    <div class="flex items-center gap-4 flex-wrap">
+      <%= link_to "Get Access", pricing_path,
+          class: "bg-green-500 hover:bg-green-400 text-white text-base font-semibold px-8 py-4 rounded-full transition shadow-lg" %>
+      <% if user_signed_in? && current_user.can_watch? %>
+        <%= link_to "Watch Videos", videos_path,
+            class: "bg-white/10 hover:bg-white/20 text-white text-base font-semibold px-8 py-4 rounded-full border border-white/30 transition" %>
+      <% end %>
+    </div>
   </div>
-  <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
-    <div class="text-3xl mb-3">🔒</div>
-    <h3 class="font-bold text-white mb-2">Members Only</h3>
-    <p class="text-gray-400 text-sm">Content is private. Subscribers stream securely — no downloads.</p>
+</section>
+
+<!-- Feature cards -->
+<section class="bg-white py-20">
+  <div class="max-w-6xl mx-auto px-5">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">What you get</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-gray-50 rounded-2xl p-7 border border-gray-100">
+        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-900 text-lg mb-2">Pro Training Videos</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Drills, mechanics, and breakdowns filmed up close — no fluff, no filler.</p>
+      </div>
+      <div class="bg-gray-50 rounded-2xl p-7 border border-gray-100">
+        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-900 text-lg mb-2">Members Only</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Content is private. Subscribers stream securely — no downloads, no sharing.</p>
+      </div>
+      <div class="bg-gray-50 rounded-2xl p-7 border border-gray-100">
+        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-900 text-lg mb-2">Watch Anywhere</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Works on your phone, tablet, or desktop. No app to install.</p>
+      </div>
+    </div>
   </div>
-  <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
-    <div class="text-3xl mb-3">📱</div>
-    <h3 class="font-bold text-white mb-2">Watch Anywhere</h3>
-    <p class="text-gray-400 text-sm">Works on phone, tablet, or desktop. No app needed.</p>
+</section>
+
+<!-- CTA strip -->
+<section class="bg-green-600 py-16">
+  <div class="max-w-6xl mx-auto px-5 text-center">
+    <h2 class="text-3xl font-bold text-white mb-4">Ready to level up?</h2>
+    <p class="text-green-100 mb-8 max-w-md mx-auto">Join the members getting access to exclusive baseball training content every week.</p>
+    <%= link_to "Start Today", pricing_path,
+        class: "inline-block bg-white text-green-700 font-bold px-8 py-4 rounded-full hover:bg-green-50 transition shadow" %>
   </div>
-</div>
+</section>

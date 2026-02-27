@@ -1,69 +1,67 @@
-<!-- Stats row -->
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-  <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
-    <p class="text-gray-500 text-xs uppercase tracking-widest mb-1">Videos</p>
-    <p class="text-3xl font-bold text-white"><%= @videos_count %></p>
+<!-- Stats -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+  <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase tracking-widest mb-2">Total Videos</p>
+    <p class="text-3xl font-bold text-gray-900"><%= @videos_count %></p>
   </div>
-  <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
-    <p class="text-gray-500 text-xs uppercase tracking-widest mb-1">Published</p>
-    <p class="text-3xl font-bold text-white"><%= @published_count %></p>
+  <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase tracking-widest mb-2">Published</p>
+    <p class="text-3xl font-bold text-gray-900"><%= @published_count %></p>
   </div>
-  <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
-    <p class="text-gray-500 text-xs uppercase tracking-widest mb-1">Subscribers</p>
-    <p class="text-3xl font-bold text-blue-400"><%= @subscribers_count %></p>
+  <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase tracking-widest mb-2">Subscribers</p>
+    <p class="text-3xl font-bold text-green-600"><%= @subscribers_count %></p>
   </div>
-  <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
-    <p class="text-gray-500 text-xs uppercase tracking-widest mb-1">MRR (est.)</p>
-    <p class="text-3xl font-bold text-green-400">$<%= (@subscribers_count * 19).to_s %></p>
+  <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase tracking-widest mb-2">Est. MRR</p>
+    <p class="text-3xl font-bold text-green-600">$<%= @subscribers_count * 19 %></p>
   </div>
 </div>
 
-<!-- Quick actions -->
-<div class="flex items-center justify-between mb-6">
-  <h2 class="text-lg font-semibold text-white">Recent Videos</h2>
-  <%= link_to "+ Upload Video", new_admin_video_path,
-      class: "bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition" %>
-</div>
+<!-- Recent videos table -->
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+  <div class="flex items-center justify-between px-6 py-4 border-b border-gray-50">
+    <h2 class="font-semibold text-gray-900">Recent Videos</h2>
+    <%= link_to "View all", admin_videos_path, class: "text-green-600 text-sm font-medium hover:underline" %>
+  </div>
 
-<div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
   <% if @recent_videos.empty? %>
-    <div class="p-8 text-center text-gray-500 text-sm">No videos yet. Upload your first one!</div>
+    <div class="py-12 text-center text-gray-400 text-sm">
+      No videos uploaded yet.
+      <%= link_to "Upload your first video", new_admin_video_path, class: "text-green-600 hover:underline" %>
+    </div>
   <% else %>
     <table class="w-full text-sm">
-      <thead class="border-b border-gray-800">
-        <tr class="text-gray-500 text-xs uppercase tracking-widest">
-          <th class="text-left px-5 py-3">Title</th>
-          <th class="text-left px-5 py-3">Status</th>
-          <th class="text-left px-5 py-3">Views</th>
-          <th class="text-left px-5 py-3">Date</th>
-          <th class="px-5 py-3"></th>
+      <thead>
+        <tr class="text-xs text-gray-400 font-medium uppercase tracking-widest border-b border-gray-50">
+          <th class="text-left px-6 py-3">Title</th>
+          <th class="text-left px-6 py-3 hidden md:table-cell">Status</th>
+          <th class="text-left px-6 py-3 hidden md:table-cell">Views</th>
+          <th class="text-left px-6 py-3 hidden md:table-cell">Date</th>
+          <th class="px-6 py-3"></th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-800">
+      <tbody class="divide-y divide-gray-50">
         <% @recent_videos.each do |video| %>
-          <tr class="hover:bg-gray-800/50">
-            <td class="px-5 py-4 text-white font-medium"><%= truncate(video.title, length: 50) %></td>
-            <td class="px-5 py-4">
+          <tr class="hover:bg-gray-50/50">
+            <td class="px-6 py-4 text-gray-900 font-medium"><%= truncate(video.title, length: 50) %></td>
+            <td class="px-6 py-4 hidden md:table-cell">
               <% if video.published? %>
-                <span class="text-xs bg-green-900/50 text-green-400 border border-green-800 px-2 py-0.5 rounded-full">Live</span>
+                <span class="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium">Live</span>
               <% elsif video.processing? %>
-                <span class="text-xs bg-yellow-900/50 text-yellow-400 border border-yellow-800 px-2 py-0.5 rounded-full">Processing</span>
+                <span class="text-xs bg-yellow-100 text-yellow-700 px-2.5 py-1 rounded-full font-medium">Processing</span>
               <% else %>
-                <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Draft</span>
+                <span class="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full font-medium">Draft</span>
               <% end %>
             </td>
-            <td class="px-5 py-4 text-gray-400"><%= video.views_count %></td>
-            <td class="px-5 py-4 text-gray-500"><%= video.created_at.strftime("%b %d") %></td>
-            <td class="px-5 py-4 text-right">
-              <%= link_to "Edit", edit_admin_video_path(video), class: "text-blue-400 hover:text-blue-300 text-xs" %>
+            <td class="px-6 py-4 text-gray-500 hidden md:table-cell"><%= video.views_count %></td>
+            <td class="px-6 py-4 text-gray-400 hidden md:table-cell"><%= video.created_at.strftime("%b %d") %></td>
+            <td class="px-6 py-4 text-right">
+              <%= link_to "Edit", edit_admin_video_path(video), class: "text-green-600 hover:underline text-xs font-medium" %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% end %>
-</div>
-
-<div class="mt-4 text-right">
-  <%= link_to "All videos →", admin_videos_path, class: "text-blue-400 hover:text-blue-300 text-sm" %>
 </div>

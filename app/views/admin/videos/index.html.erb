@@ -1,48 +1,50 @@
-<div class="flex items-center justify-between mb-8">
-  <h1 class="text-2xl font-bold text-white">All Videos</h1>
-  <%= link_to "+ Upload", new_admin_video_path,
-      class: "bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition" %>
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-xl font-bold text-gray-900">All Videos</h1>
+  <%= link_to "Upload Video", new_admin_video_path,
+      class: "bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition" %>
 </div>
 
-<div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
   <% if @videos.empty? %>
-    <div class="p-10 text-center text-gray-500">No videos yet.</div>
+    <div class="py-16 text-center text-gray-400 text-sm">No videos yet.</div>
   <% else %>
     <table class="w-full text-sm">
-      <thead class="border-b border-gray-800">
-        <tr class="text-gray-500 text-xs uppercase tracking-widest">
-          <th class="text-left px-5 py-3">Title</th>
-          <th class="text-left px-5 py-3 hidden md:table-cell">Status</th>
-          <th class="text-left px-5 py-3 hidden md:table-cell">Views</th>
-          <th class="text-left px-5 py-3 hidden md:table-cell">Uploaded</th>
-          <th class="px-5 py-3"></th>
+      <thead>
+        <tr class="text-xs text-gray-400 font-medium uppercase tracking-widest border-b border-gray-50">
+          <th class="text-left px-6 py-3">Title</th>
+          <th class="text-left px-6 py-3 hidden md:table-cell">Status</th>
+          <th class="text-left px-6 py-3 hidden md:table-cell">Views</th>
+          <th class="text-left px-6 py-3 hidden md:table-cell">Uploaded</th>
+          <th class="px-6 py-3"></th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-800">
+      <tbody class="divide-y divide-gray-50">
         <% @videos.each do |video| %>
-          <tr class="hover:bg-gray-800/40">
-            <td class="px-5 py-4 text-white font-medium"><%= truncate(video.title, length: 55) %></td>
-            <td class="px-5 py-4 hidden md:table-cell">
+          <tr class="hover:bg-gray-50/50">
+            <td class="px-6 py-4 text-gray-900 font-medium max-w-xs"><%= truncate(video.title, length: 55) %></td>
+            <td class="px-6 py-4 hidden md:table-cell">
               <% if video.published? %>
-                <span class="text-xs bg-green-900/50 text-green-400 border border-green-800 px-2 py-0.5 rounded-full">Live</span>
+                <span class="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium">Live</span>
               <% else %>
-                <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Draft</span>
+                <span class="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full font-medium">Draft</span>
               <% end %>
             </td>
-            <td class="px-5 py-4 text-gray-400 hidden md:table-cell"><%= video.views_count %></td>
-            <td class="px-5 py-4 text-gray-500 hidden md:table-cell"><%= video.created_at.strftime("%b %d, %Y") %></td>
-            <td class="px-5 py-4 text-right space-x-3">
-              <% if video.published? %>
-                <%= button_to "Unpublish", unpublish_admin_video_path(video), method: :patch,
-                    class: "text-yellow-500 hover:text-yellow-400 text-xs" %>
-              <% else %>
-                <%= button_to "Publish", publish_admin_video_path(video), method: :patch,
-                    class: "text-green-500 hover:text-green-400 text-xs" %>
-              <% end %>
-              <%= link_to "Edit", edit_admin_video_path(video), class: "text-blue-400 hover:text-blue-300 text-xs" %>
-              <%= button_to "Delete", admin_video_path(video), method: :delete,
-                  data: { confirm: "Delete this video?" },
-                  class: "text-red-500 hover:text-red-400 text-xs" %>
+            <td class="px-6 py-4 text-gray-500 hidden md:table-cell"><%= video.views_count %></td>
+            <td class="px-6 py-4 text-gray-400 hidden md:table-cell"><%= video.created_at.strftime("%b %d, %Y") %></td>
+            <td class="px-6 py-4">
+              <div class="flex items-center justify-end gap-3">
+                <% if video.published? %>
+                  <%= button_to "Unpublish", unpublish_admin_video_path(video), method: :patch,
+                      class: "text-yellow-600 hover:underline text-xs font-medium bg-transparent border-0 cursor-pointer" %>
+                <% else %>
+                  <%= button_to "Publish", publish_admin_video_path(video), method: :patch,
+                      class: "text-green-600 hover:underline text-xs font-medium bg-transparent border-0 cursor-pointer" %>
+                <% end %>
+                <%= link_to "Edit", edit_admin_video_path(video), class: "text-gray-500 hover:text-gray-900 text-xs font-medium" %>
+                <%= button_to "Delete", admin_video_path(video), method: :delete,
+                    data: { turbo_confirm: "Delete this video?" },
+                    class: "text-red-400 hover:text-red-600 text-xs font-medium bg-transparent border-0 cursor-pointer" %>
+              </div>
             </td>
           </tr>
         <% end %>

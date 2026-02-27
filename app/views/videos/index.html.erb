@@ -1,42 +1,55 @@
-<div class="flex items-center justify-between mb-8">
-  <h1 class="text-2xl font-bold text-white">Training Videos</h1>
-  <span class="text-gray-500 text-sm"><%= @videos.total_count %> videos</span>
-</div>
-
-<% if @videos.empty? %>
-  <div class="text-center py-20 text-gray-500">
-    <p class="text-4xl mb-4">🎬</p>
-    <p>No videos yet. Check back soon.</p>
+<div class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <div class="bg-white border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-5 py-8">
+      <h1 class="text-2xl font-bold text-gray-900">Training Videos</h1>
+      <p class="text-gray-500 text-sm mt-1"><%= @videos.total_count %> videos available</p>
+    </div>
   </div>
-<% else %>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <% @videos.each do |video| %>
-      <%= link_to video_path(video), class: "group bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-blue-600 transition" do %>
-        <!-- Thumbnail -->
-        <div class="aspect-video bg-gray-800 relative">
-          <% if video.thumbnail.present? %>
-            <img src="<%= video.thumbnail.url %>" class="w-full h-full object-cover" alt="">
-          <% else %>
-            <div class="w-full h-full flex items-center justify-center text-gray-600 text-4xl">▶</div>
+
+  <div class="max-w-6xl mx-auto px-5 py-8">
+    <% if @videos.empty? %>
+      <div class="text-center py-24 text-gray-400">
+        <p class="text-5xl mb-4">▶</p>
+        <p class="font-medium">No videos yet. Check back soon.</p>
+      </div>
+    <% else %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <% @videos.each do |video| %>
+          <%= link_to video_path(video), class: "group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition" do %>
+            <!-- Thumbnail -->
+            <div class="aspect-video bg-gray-100 relative overflow-hidden">
+              <% if video.thumbnail.present? %>
+                <img src="<%= video.thumbnail.url %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" alt="">
+              <% else %>
+                <div class="w-full h-full flex items-center justify-center">
+                  <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg class="w-5 h-5 text-green-600 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                    </svg>
+                  </div>
+                </div>
+              <% end %>
+              <% if video.duration_seconds %>
+                <span class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-0.5 rounded-md font-medium">
+                  <%= video.formatted_duration %>
+                </span>
+              <% end %>
+            </div>
+            <!-- Info -->
+            <div class="p-4">
+              <h3 class="font-semibold text-gray-900 group-hover:text-green-600 transition text-sm leading-snug line-clamp-2 mb-1.5">
+                <%= video.title %>
+              </h3>
+              <p class="text-gray-400 text-xs"><%= video.created_at.strftime("%B %d, %Y") %></p>
+            </div>
           <% end %>
-          <% if video.duration_seconds %>
-            <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-0.5 rounded">
-              <%= video.formatted_duration %>
-            </span>
-          <% end %>
-        </div>
-        <!-- Info -->
-        <div class="p-4">
-          <h3 class="font-semibold text-white group-hover:text-blue-400 transition line-clamp-2 mb-1">
-            <%= video.title %>
-          </h3>
-          <p class="text-gray-500 text-xs"><%= time_ago_in_words(video.created_at) %> ago</p>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
+
+      <div class="mt-8">
+        <%= paginate @videos %>
+      </div>
     <% end %>
   </div>
-
-  <div class="mt-8">
-    <%= paginate @videos %>
-  </div>
-<% end %>
+</div>
