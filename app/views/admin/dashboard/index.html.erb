@@ -1,65 +1,63 @@
-<!-- Stats -->
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-  <div class="bg-zinc-800 rounded-2xl border border-zinc-600/40/50 p-5">
-    <p class="text-xs text-zinc-500 font-medium uppercase tracking-widest mb-2">Total Videos</p>
-    <p class="text-3xl font-bold text-white"><%= @videos_count %></p>
+<!-- Stat cards -->
+<div class="grid grid-cols-2 gap-3 mb-6">
+  <div class="bg-zinc-900 rounded-2xl border border-white/5 p-5">
+    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-3">Total Videos</p>
+    <p class="text-4xl font-black text-white"><%= @videos_count %></p>
   </div>
-  <div class="bg-zinc-800 rounded-2xl border border-zinc-600/40/50 p-5">
-    <p class="text-xs text-zinc-500 font-medium uppercase tracking-widest mb-2">Published</p>
-    <p class="text-3xl font-bold text-white"><%= @published_count %></p>
+  <div class="bg-zinc-900 rounded-2xl border border-white/5 p-5">
+    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-3">Published</p>
+    <p class="text-4xl font-black text-white"><%= @published_count %></p>
   </div>
-  <div class="bg-zinc-800 rounded-2xl border border-zinc-600/40/50 p-5">
-    <p class="text-xs text-zinc-500 font-medium uppercase tracking-widest mb-2">Subscribers</p>
-    <p class="text-3xl font-bold text-red-400"><%= @subscribers_count %></p>
+  <div class="bg-zinc-900 rounded-2xl border border-white/5 p-5">
+    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-3">Members</p>
+    <p class="text-4xl font-black text-red-400"><%= @subscribers_count %></p>
   </div>
-  <div class="bg-zinc-800 rounded-2xl border border-zinc-600/40/50 p-5">
-    <p class="text-xs text-zinc-500 font-medium uppercase tracking-widest mb-2">Est. MRR</p>
-    <p class="text-3xl font-bold text-red-400">$<%= @subscribers_count * 19 %></p>
+  <div class="bg-zinc-900 rounded-2xl border border-white/5 p-5">
+    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-3">Est. MRR</p>
+    <p class="text-4xl font-black text-red-400">$<%= @subscribers_count * 19 %></p>
   </div>
 </div>
 
+<!-- Quick action -->
+<%= link_to new_admin_video_path,
+    class: "flex items-center justify-between w-full bg-red-600 hover:bg-red-700 rounded-2xl px-5 py-4 mb-6 transition" do %>
+  <div>
+    <p class="text-white font-bold text-sm">Upload a video</p>
+    <p class="text-red-200/70 text-xs mt-0.5">Add new content for your members</p>
+  </div>
+  <svg class="w-5 h-5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+  </svg>
+<% end %>
+
 <!-- Recent videos -->
-<div class="bg-zinc-800 rounded-2xl border border-zinc-600/40/50 overflow-hidden">
-  <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-600/40/50">
-    <h2 class="font-semibold text-white">Recent Videos</h2>
-    <%= link_to "View all", admin_videos_path, class: "text-red-400 text-sm font-medium hover:text-red-300" %>
+<div class="bg-zinc-900 rounded-2xl border border-white/5 overflow-hidden">
+  <div class="flex items-center justify-between px-5 py-4 border-b border-white/5">
+    <h2 class="font-bold text-white text-sm">Recent Videos</h2>
+    <%= link_to "View all", admin_videos_path, class: "text-red-400 text-xs font-semibold" %>
   </div>
 
   <% if @recent_videos.empty? %>
-    <div class="py-12 text-center text-zinc-600 text-sm">
-      No videos uploaded yet.
-      <%= link_to "Upload your first video", new_admin_video_path, class: "text-red-400 hover:text-red-300" %>
+    <div class="py-12 text-center">
+      <p class="text-zinc-600 text-sm mb-1">No videos uploaded yet.</p>
+      <%= link_to "Upload your first video", new_admin_video_path, class: "text-red-400 text-sm font-semibold" %>
     </div>
   <% else %>
-    <table class="w-full text-sm">
-      <thead>
-        <tr class="text-xs text-zinc-500 font-medium uppercase tracking-widest border-b border-zinc-600/40/50">
-          <th class="text-left px-6 py-3">Title</th>
-          <th class="text-left px-6 py-3 hidden md:table-cell">Status</th>
-          <th class="text-left px-6 py-3 hidden md:table-cell">Views</th>
-          <th class="text-left px-6 py-3 hidden md:table-cell">Date</th>
-          <th class="px-6 py-3"></th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-zinc-700/40">
-        <% @recent_videos.each do |video| %>
-          <tr class="hover:bg-zinc-800/50">
-            <td class="px-6 py-4 text-white font-medium"><%= truncate(video.title, length: 50) %></td>
-            <td class="px-6 py-4 hidden md:table-cell">
-              <% if video.published? %>
-                <span class="text-xs bg-red-600/10 text-red-400 border border-red-600/20 px-2.5 py-1 rounded-full font-medium">Live</span>
-              <% else %>
-                <span class="text-xs bg-zinc-800 text-zinc-400 border border-zinc-600/40 px-2.5 py-1 rounded-full font-medium">Draft</span>
-              <% end %>
-            </td>
-            <td class="px-6 py-4 text-zinc-400 hidden md:table-cell"><%= video.views_count %></td>
-            <td class="px-6 py-4 text-zinc-500 hidden md:table-cell"><%= video.created_at.strftime("%b %d") %></td>
-            <td class="px-6 py-4 text-right">
-              <%= link_to "Edit", edit_admin_video_path(video), class: "text-red-400 hover:text-red-300 text-xs font-medium" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <div class="divide-y divide-white/5">
+      <% @recent_videos.each do |video| %>
+        <div class="flex items-center gap-3 px-5 py-4">
+          <div class="flex-1 min-w-0">
+            <p class="text-white text-sm font-medium truncate"><%= video.title %></p>
+            <p class="text-zinc-500 text-xs mt-0.5"><%= video.created_at.strftime("%b %d") %></p>
+          </div>
+          <% if video.published? %>
+            <span class="text-[10px] font-bold bg-red-600/10 text-red-400 border border-red-600/20 px-2.5 py-1 rounded-full shrink-0">Live</span>
+          <% else %>
+            <span class="text-[10px] font-bold bg-white/5 text-zinc-400 border border-white/10 px-2.5 py-1 rounded-full shrink-0">Draft</span>
+          <% end %>
+          <%= link_to "Edit", edit_admin_video_path(video), class: "text-zinc-500 text-xs font-semibold shrink-0 ml-1" %>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 </div>
