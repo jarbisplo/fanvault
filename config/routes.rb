@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   end
 
   # Stripe webhooks
-  mount Pay::Engine, at: '/pay'
+  mount Pay::Engine, at: "/pay", as: "pay_engine"
 
   root to: 'home#index'
 

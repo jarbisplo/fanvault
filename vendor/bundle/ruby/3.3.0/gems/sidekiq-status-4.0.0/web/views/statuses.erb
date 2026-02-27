@@ -1,0 +1,98 @@
+<% require 'cgi'; def h(v); CGI.escape_html(v.to_s); end %>
+<link rel="stylesheet" href="<%= root_path %>assets/statuses.css" />
+<script type="text/javascript" src="<%= root_path %>assets/statuses.js"></script>
+<div class="index-header">
+  <h3 class="wi">Recent job statuses</h3>
+  <div class="nav-container">
+    <%= erb :_paging, locals: { url: "#{root_path}statuses" } %>
+    <div class="filter-status">
+      Filter Status:&nbsp;
+      <select class="form-control">
+        <% (['all', 'complete', 'failed', 'interrupted', 'queued', 'retrying', 'stopped', 'working']).each do |status| %>
+          <option data-url="?<%= qparams(status: status)%>" value="<%= status %>" <%= 'selected="selected"' if status == (safe_url_params("status")) %>><%= status %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <div class="per-page">
+      Per page:&nbsp;
+      <select class="form-control">
+        <% (Sidekiq::Status::Web.per_page_opts + ['all']).each do |num| %>
+        <option data-url="?<%= qparams(page: 1, per_page: num)%>" value="<%= num %>" <%= 'selected="selected"' if num.to_s == (safe_url_params("per_page") || @count) %>><%= num %></option>
+        <% end %>
+      </select>
+    </div>
+  </div>
+</div>
+<table class="table table-hover table-bordered table-striped">
+  <tr>
+    <% @headers.each do |hdr| %>
+      <th class="header <%= h hdr[:class] %> header_<%= h hdr[:id] %>">
+        <a href="<%= h hdr[:url] %>"><%= h hdr[:name] %></a>
+      </th>
+    <% end %>
+    <th class="header">
+      Actions
+    </th>
+  </tr>
+  <% @statuses.each do |container| %>
+    <tr>
+      <td>
+        <div title='<%= h container["jid"] %>'><a href="<%= root_path %>statuses/<%= h container["jid"] %>"><%= h container["worker"] %></a></div>
+      </td>
+      <td>
+        <div class='args' title='<%= h container["jid"] %>'><%= h container["args"] %></div>
+      </td>
+      <td class='center'>
+        <span class='label label-<%= h container["label"] %>'><%= h container["status"] %></span>
+      </td>
+      <% secs = Time.now.to_i - container["updated_at"].to_i %>
+      <td class='center nowrap' title="<%= Time.at(container["updated_at"].to_i) %>">
+        <% if secs > 0 %>
+          <%= ChronicDuration.output(secs, :weeks => true, :units => 2) %> ago
+        <% else %>
+          Now
+        <% end %>
+      </td>
+      <td>
+        <div class="progress" class="mb-0">
+          <div class="progress-bar" role="progressbar" aria-valuenow="<%= container["pct_complete"].to_i %>" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-percentage">
+              <%= container["pct_complete"].to_i %>%
+            </div>
+          </div>
+        </div>
+      </td>
+      <td class='center nowrap'>
+        <% unless container["elapsed"].nil? %>
+          <%= ChronicDuration.output(container["elapsed"].to_i, :weeks => true, :units => 2) || '0 secs' %>
+        <% end %>
+      </td>
+      <td class='center nowrap'>
+        <% if container["eta"] %>
+          <%= ChronicDuration.output(container["eta"].to_i, :weeks => true, :units => 2) %>
+        <% end %>
+      </td>
+      <td>
+        <div class="actions">
+          <form action="statuses" method="post">
+            <input type="hidden" name="jid" value="<%= h container["jid"] %>" />
+            <%= csrf_tag %>
+            <% if container["status"] == "complete" %>
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" class="btn btn-danger btn-xs" value="Remove" />
+            <% elsif container["status"] == "failed" %>
+              <input type="hidden" name="_method" value="put" />
+              <input type="submit" class="btn btn-warning btn-xs" value="Retry Now" />
+            <% end %>
+          </form>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+  <% if @statuses.empty? %>
+    <tr>
+      <td colspan="8"></td>
+    </tr>
+  <% end %>
+</table>

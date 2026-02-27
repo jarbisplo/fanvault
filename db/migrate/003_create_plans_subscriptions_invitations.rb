@@ -11,20 +11,7 @@ class CreatePlansSubscriptionsInvitations < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    create_table :subscriptions do |t|
-      t.references :creator,    null: false, foreign_key: { to_table: :users }
-      t.references :subscriber, null: false, foreign_key: { to_table: :users }
-      t.references :plan,       foreign_key: true
-      t.references :invitation, foreign_key: true
-      t.integer    :status,     null: false, default: 0    # pending
-      t.integer    :kind,       null: false, default: 0    # paid
-      t.string     :stripe_subscription_id
-      t.datetime   :current_period_end
-      t.timestamps
-    end
-
-    add_index :subscriptions, [:creator_id, :subscriber_id], unique: true
-
+    # Invitations must come BEFORE subscriptions (subscriptions FK references invitations)
     create_table :invitations do |t|
       t.references :creator,    null: false, foreign_key: { to_table: :users }
       t.references :subscriber, foreign_key: { to_table: :users }
@@ -39,6 +26,20 @@ class CreatePlansSubscriptionsInvitations < ActiveRecord::Migration[7.1]
 
     add_index :invitations, :token, unique: true
     add_index :invitations, [:creator_id, :email]
+
+    create_table :subscriptions do |t|
+      t.references :creator,    null: false, foreign_key: { to_table: :users }
+      t.references :subscriber, null: false, foreign_key: { to_table: :users }
+      t.references :plan,       foreign_key: true
+      t.references :invitation, foreign_key: true
+      t.integer    :status,     null: false, default: 0    # pending
+      t.integer    :kind,       null: false, default: 0    # paid
+      t.string     :stripe_subscription_id
+      t.datetime   :current_period_end
+      t.timestamps
+    end
+
+    add_index :subscriptions, [:creator_id, :subscriber_id], unique: true
 
     create_table :video_views do |t|
       t.references :video, null: false, foreign_key: true

@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.0'
+ruby '3.3.8'
 
-gem 'rails', '~> 7.1'
+gem 'rails', '~> 8.1'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 6.0'
 gem 'sprockets-rails'
@@ -25,12 +25,12 @@ gem 'pundit'
 gem 'rolify'
 
 # File uploads
-gem 'carrierwave', '~> 2.0'
+gem 'carrierwave', '~> 3.0'
 gem 'fog-aws'
 gem 'mini_magick'           # video thumbnail processing
 
 # Payments
-gem 'stripe'
+gem 'stripe', '~> 12.0'
 gem 'pay', '~> 7.0'         # Stripe subscription wrapper
 
 # Background jobs
