@@ -85,6 +85,7 @@ class Video < ApplicationRecord
   private
 
   def enqueue_processing
+    update_column(:status, self.class.statuses[:processing])
     VideoProcessingJob.perform_later(id)
   end
 end
