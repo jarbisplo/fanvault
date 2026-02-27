@@ -16,24 +16,30 @@
     </video>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+  <script src="/hls.min.js"></script>
   <script>
     (function() {
-      const video  = document.getElementById('video-player');
-      const hlsSrc = video.dataset.hls;
-      const mp4Src = video.dataset.fallback;
+      var video  = document.getElementById('video-player');
+      var hlsSrc = video.dataset.hls;
+      var mp4Src = video.dataset.fallback;
 
-      if (hlsSrc && Hls.isSupported()) {
-        const hls = new Hls({ maxMaxBufferLength: 30, enableWorker: true });
+      function loadFallback() {
+        if (mp4Src) { video.src = mp4Src; video.load(); }
+      }
+
+      if (hlsSrc && typeof Hls !== 'undefined' && Hls.isSupported()) {
+        var hls = new Hls({ enableWorker: false, maxMaxBufferLength: 30 });
+        hls.on(Hls.Events.ERROR, function(e, data) {
+          if (data.fatal) { console.error('[HLS fatal]', data); loadFallback(); }
+        });
         hls.loadSource(hlsSrc);
         hls.attachMedia(video);
       } else if (hlsSrc && video.canPlayType('application/vnd.apple.mpegurl')) {
         // Safari / iOS native HLS
         video.src = hlsSrc;
         video.load();
-      } else if (mp4Src) {
-        // Fallback: direct mp4 (dev / pre-transcode)
-        video.src = mp4Src;
+      } else {
+        loadFallback();
       }
     })();
   </script>
