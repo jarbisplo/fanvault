@@ -1,16 +1,16 @@
 <div class="flex items-center justify-between mb-6">
-  <h1 class="text-xl font-bold text-gray-900">All Videos</h1>
+  <h1 class="text-xl font-bold text-white">All Videos</h1>
   <%= link_to "Upload Video", new_admin_video_path,
-      class: "bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition" %>
+      class: "bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition" %>
 </div>
 
-<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+<div class="bg-zinc-900 rounded-2xl border border-zinc-800 shadow-none overflow-hidden">
   <% if @videos.empty? %>
-    <div class="py-16 text-center text-gray-400 text-sm">No videos yet.</div>
+    <div class="py-16 text-center text-zinc-500 text-sm">No videos yet.</div>
   <% else %>
     <table class="w-full text-sm">
       <thead>
-        <tr class="text-xs text-gray-400 font-medium uppercase tracking-widest border-b border-gray-50">
+        <tr class="text-xs text-zinc-500 font-medium uppercase tracking-widest border-b border-zinc-800">
           <th class="text-left px-6 py-3">Title</th>
           <th class="text-left px-6 py-3 hidden md:table-cell">Status</th>
           <th class="text-left px-6 py-3 hidden md:table-cell">Views</th>
@@ -18,19 +18,19 @@
           <th class="px-6 py-3"></th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-50">
+      <tbody class="divide-y divide-zinc-800">
         <% @videos.each do |video| %>
-          <tr class="hover:bg-gray-50/50">
-            <td class="px-6 py-4 text-gray-900 font-medium max-w-xs"><%= truncate(video.title, length: 55) %></td>
+          <tr class="hover:bg-zinc-950/50">
+            <td class="px-6 py-4 text-white font-medium max-w-xs"><%= truncate(video.title, length: 55) %></td>
             <td class="px-6 py-4 hidden md:table-cell">
               <% if video.published? %>
-                <span class="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium">Live</span>
+                <span class="text-xs bg-orange-500/10 text-orange-400 px-2.5 py-1 rounded-full font-medium">Live</span>
               <% else %>
-                <span class="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full font-medium">Draft</span>
+                <span class="text-xs bg-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Draft</span>
               <% end %>
             </td>
-            <td class="px-6 py-4 text-gray-500 hidden md:table-cell"><%= video.views_count %></td>
-            <td class="px-6 py-4 text-gray-400 hidden md:table-cell"><%= video.created_at.strftime("%b %d, %Y") %></td>
+            <td class="px-6 py-4 text-zinc-500 hidden md:table-cell"><%= video.views_count %></td>
+            <td class="px-6 py-4 text-zinc-500 hidden md:table-cell"><%= video.created_at.strftime("%b %d, %Y") %></td>
             <td class="px-6 py-4">
               <div class="flex items-center justify-end gap-3">
                 <% if video.published? %>
@@ -38,9 +38,9 @@
                       class: "text-yellow-600 hover:underline text-xs font-medium bg-transparent border-0 cursor-pointer" %>
                 <% else %>
                   <%= button_to "Publish", publish_admin_video_path(video), method: :patch,
-                      class: "text-green-600 hover:underline text-xs font-medium bg-transparent border-0 cursor-pointer" %>
+                      class: "text-orange-400 hover:underline text-xs font-medium bg-transparent border-0 cursor-pointer" %>
                 <% end %>
-                <%= link_to "Edit", edit_admin_video_path(video), class: "text-gray-500 hover:text-gray-900 text-xs font-medium" %>
+                <%= link_to "Edit", edit_admin_video_path(video), class: "text-zinc-500 hover:text-white text-xs font-medium" %>
                 <%= button_to "Delete", admin_video_path(video), method: :delete,
                     data: { turbo_confirm: "Delete this video?" },
                     class: "text-red-400 hover:text-red-600 text-xs font-medium bg-transparent border-0 cursor-pointer" %>

@@ -1,11 +1,11 @@
 <div class="max-w-xl">
   <div class="mb-6">
-    <%= link_to "Back to videos", admin_videos_path, class: "text-sm text-gray-500 hover:text-gray-900 font-medium" %>
+    <%= link_to "Back to videos", admin_videos_path, class: "text-sm text-zinc-500 hover:text-white font-medium" %>
   </div>
 
-  <h1 class="text-2xl font-bold text-gray-900 mb-8">Upload Video</h1>
+  <h1 class="text-2xl font-bold text-white mb-8">Upload Video</h1>
 
-  <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-7">
+  <div class="bg-zinc-900 rounded-2xl border border-zinc-800 shadow-none p-7">
     <%= form_with model: [:admin, @video], multipart: true, class: "space-y-6" do |f| %>
       <% if @video.errors.any? %>
         <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-700">
@@ -14,34 +14,34 @@
       <% end %>
 
       <div>
-        <%= f.label :title, "Title", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+        <%= f.label :title, "Title", class: "block text-sm font-semibold text-zinc-300 mb-2" %>
         <%= f.text_field :title, placeholder: "e.g. Pitching mechanics — full breakdown",
-            class: "w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" %>
+            class: "w-full border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
       </div>
 
       <div>
-        <%= f.label :description, "Description (optional)", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+        <%= f.label :description, "Description (optional)", class: "block text-sm font-semibold text-zinc-300 mb-2" %>
         <%= f.text_area :description, rows: 3, placeholder: "What does this video cover?",
-            class: "w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none" %>
+            class: "w-full border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none" %>
       </div>
 
       <div>
-        <%= f.label :video_file, "Video File", class: "block text-sm font-semibold text-gray-700 mb-2" %>
-        <label id="video-drop-zone" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-green-400 transition bg-gray-50">
-          <p class="text-gray-400 text-sm" id="video-label">Click to select video file</p>
+        <%= f.label :video_file, "Video File", class: "block text-sm font-semibold text-zinc-300 mb-2" %>
+        <label id="video-drop-zone" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-zinc-700 rounded-xl cursor-pointer hover:border-orange-500 transition bg-zinc-950">
+          <p class="text-zinc-500 text-sm" id="video-label">Click to select video file</p>
           <p class="text-gray-300 text-xs mt-1">MP4, MOV, MKV — max 5 GB</p>
           <%= f.file_field :video_file, accept: "video/*", class: "hidden", id: "video-input" %>
         </label>
       </div>
 
       <div>
-        <%= f.label :thumbnail, "Thumbnail (optional)", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+        <%= f.label :thumbnail, "Thumbnail (optional)", class: "block text-sm font-semibold text-zinc-300 mb-2" %>
         <%= f.file_field :thumbnail, accept: "image/*",
-            class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-green-50 file:text-green-700 hover:file:bg-green-100 file:font-medium" %>
+            class: "block w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-orange-500/10 file:text-orange-400 hover:file:bg-orange-500/10 file:font-medium" %>
       </div>
 
       <%= f.submit "Upload Video",
-          class: "w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-2xl transition cursor-pointer" %>
+          class: "w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-2xl transition cursor-pointer" %>
     <% end %>
   </div>
 </div>

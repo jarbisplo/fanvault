@@ -1,82 +1,107 @@
-<!-- Hero: image block + white card that overlaps it -->
-<section class="bg-white">
+<!-- Hero: athlete image top, dark card slides up from bottom -->
+<section class="bg-zinc-950">
 
-  <!-- Athlete image block — fixed viewport height -->
+  <!-- Athlete image — top portion -->
   <div class="relative w-full" style="height: 58vh;">
     <%= image_tag "hero-placeholder.jpg",
-        alt: "Baseball player",
+        alt: "Mauricio Dubon",
         class: "w-full h-full object-cover object-top" %>
-    <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-white/60"></div>
+    <!-- Dark gradient fading into the card below -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-zinc-950/80"></div>
   </div>
 
-  <!-- White card overlaps the image with negative margin + rounded top -->
-  <div class="bg-white rounded-t-[2rem] px-7 pb-10 pt-7 -mt-8 shadow-[0_-4px_30px_rgba(0,0,0,0.08)] relative z-10">
+  <!-- Dark card overlaps the image -->
+  <div class="bg-zinc-950 rounded-t-[2rem] px-7 pb-10 pt-7 -mt-8 relative z-10">
 
-    <!-- Small logo mark above headline -->
+    <!-- Drag handle -->
     <div class="flex justify-center mb-5">
-      <div class="w-10 h-1.5 bg-gray-200 rounded-full"></div>
+      <div class="w-10 h-1 bg-zinc-700 rounded-full"></div>
     </div>
 
-    <h1 class="text-3xl font-extrabold text-gray-900 text-center leading-tight mb-3">
-      Train smarter.<br>
-      <span class="text-green-600">Perform at your best.</span>
+    <!-- Badge -->
+    <div class="flex justify-center mb-4">
+      <span class="bg-orange-500/10 text-orange-400 border border-orange-500/30 text-xs font-semibold px-3 py-1 rounded-full tracking-widest uppercase">
+        2x Gold Glove Winner
+      </span>
+    </div>
+
+    <h1 class="text-3xl font-extrabold text-white text-center leading-tight mb-3">
+      Train with a<br>
+      <span class="text-orange-400">Gold Glove pro.</span>
     </h1>
-    <p class="text-gray-400 text-sm text-center mb-8 max-w-xs mx-auto leading-relaxed">
-      Exclusive baseball training videos from a pro. New content every week.
+    <p class="text-zinc-400 text-sm text-center mb-8 max-w-xs mx-auto leading-relaxed">
+      Exclusive baseball training from Mauricio Dubon — Atlanta Braves outfielder and 2x Gold Glove Award winner.
     </p>
 
-    <%= link_to "Get Started", pricing_path,
-        class: "block w-full bg-green-500 hover:bg-green-600 text-white text-base font-bold py-4 rounded-2xl text-center transition shadow-md shadow-green-200" %>
+    <%= link_to "Get Access", pricing_path,
+        class: "block w-full bg-orange-500 hover:bg-orange-600 text-white text-base font-bold py-4 rounded-2xl text-center transition" %>
 
-    <p class="text-center text-gray-400 text-sm mt-5">
+    <p class="text-center text-zinc-500 text-sm mt-5">
       Already a member?
-      <%= link_to "Sign in", new_user_session_path, class: "text-green-600 font-semibold hover:underline" %>
+      <%= link_to "Sign in", new_user_session_path, class: "text-orange-400 font-semibold hover:text-orange-300" %>
     </p>
   </div>
 </section>
 
-<!-- Features section below the fold -->
-<section class="bg-gray-50 py-16 px-5">
+<!-- About Mauricio -->
+<section class="bg-zinc-900 py-14 px-5">
   <div class="max-w-xl mx-auto">
-    <h2 class="text-2xl font-bold text-gray-900 text-center mb-8">What you get</h2>
+    <h2 class="text-xl font-bold text-white text-center mb-8">About the trainer</h2>
+    <div class="bg-zinc-800 rounded-2xl p-6 border border-zinc-700">
+      <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center shrink-0 text-orange-400 font-bold text-lg">
+          MD
+        </div>
+        <div>
+          <h3 class="font-bold text-white text-lg leading-tight">Mauricio Dubon</h3>
+          <p class="text-orange-400 text-sm font-medium mb-3">Atlanta Braves · Center Field</p>
+          <p class="text-zinc-400 text-sm leading-relaxed">
+            2x Gold Glove Award winner. Formerly of the Houston Astros. One of the best defensive outfielders in Major League Baseball — now sharing the drills and techniques that got him there.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <div class="space-y-4">
-      <!-- Feature card 1 -->
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center gap-5">
-        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center shrink-0">
-          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<!-- Feature cards -->
+<section class="bg-zinc-950 py-14 px-5">
+  <div class="max-w-xl mx-auto">
+    <h2 class="text-xl font-bold text-white text-center mb-8">What you get</h2>
+    <div class="space-y-3">
+      <div class="bg-zinc-900 rounded-2xl p-5 border border-zinc-800 flex items-center gap-4">
+        <div class="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
           </svg>
         </div>
         <div>
-          <h3 class="font-semibold text-gray-900 mb-0.5">Pro Training Videos</h3>
-          <p class="text-gray-400 text-sm">Drills and mechanics filmed up close. No filler.</p>
+          <h3 class="font-semibold text-white mb-0.5">Pro Training Videos</h3>
+          <p class="text-zinc-400 text-sm">Real drills from a Gold Glove outfielder. No fluff.</p>
         </div>
       </div>
 
-      <!-- Feature card 2 -->
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center gap-5">
-        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center shrink-0">
-          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="bg-zinc-900 rounded-2xl p-5 border border-zinc-800 flex items-center gap-4">
+        <div class="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
           </svg>
         </div>
         <div>
-          <h3 class="font-semibold text-gray-900 mb-0.5">Members Only</h3>
-          <p class="text-gray-400 text-sm">Private library. Secure streaming only — no downloads.</p>
+          <h3 class="font-semibold text-white mb-0.5">Members Only</h3>
+          <p class="text-zinc-400 text-sm">Private library. Secure streaming only — no downloads.</p>
         </div>
       </div>
 
-      <!-- Feature card 3 -->
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center gap-5">
-        <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center shrink-0">
-          <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="bg-zinc-900 rounded-2xl p-5 border border-zinc-800 flex items-center gap-4">
+        <div class="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
           </svg>
         </div>
         <div>
-          <h3 class="font-semibold text-gray-900 mb-0.5">New Content Weekly</h3>
-          <p class="text-gray-400 text-sm">Fresh training content added every week. Cancel anytime.</p>
+          <h3 class="font-semibold text-white mb-0.5">New Content Weekly</h3>
+          <p class="text-zinc-400 text-sm">Fresh training drops every week. Cancel anytime.</p>
         </div>
       </div>
     </div>
@@ -84,11 +109,11 @@
 </section>
 
 <!-- CTA strip -->
-<section class="bg-green-600 py-14 px-5">
+<section class="bg-orange-500 py-14 px-5">
   <div class="max-w-xl mx-auto text-center">
-    <h2 class="text-2xl font-bold text-white mb-3">Ready to train like a pro?</h2>
-    <p class="text-green-100 text-sm mb-7">Join members already watching exclusive baseball training content.</p>
+    <h2 class="text-2xl font-bold text-white mb-3">Ready to train like a Brave?</h2>
+    <p class="text-orange-100 text-sm mb-7">Join members getting exclusive access to Mauricio Dubon's training content.</p>
     <%= link_to "Start Today", pricing_path,
-        class: "inline-block bg-white text-green-700 font-bold px-8 py-3.5 rounded-full hover:bg-green-50 transition" %>
+        class: "inline-block bg-white text-orange-600 font-bold px-8 py-3.5 rounded-full hover:bg-orange-50 transition" %>
   </div>
 </section>
