@@ -17,15 +17,15 @@
     <!-- Overline — single line, no wrap -->
     <div class="flex items-center gap-2 mb-4">
       <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 whitespace-nowrap">Exclusive Training</span>
-      <span class="w-1 h-1 rounded-full bg-red-500 shrink-0"></span>
-      <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 whitespace-nowrap">Atlanta Braves</span>
+      <span class="w-1 h-1 rounded-full bg-orange-500 shrink-0"></span>
+      <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 whitespace-nowrap">MLB Pro</span>
     </div>
 
     <!-- Big display headline overlaid on image -->
     <h1 class="font-black leading-[0.9] mb-5" style="font-size: clamp(3rem, 11vw, 5.5rem); letter-spacing: -0.03em;">
       <span class="block text-white">Train</span>
-      <span class="block text-white">Like a</span>
-      <span class="block text-red-500" style="text-shadow: 0 0 80px rgba(220,38,38,0.5);">Brave.</span>
+      <span class="block text-white">With</span>
+      <span class="block text-orange-500" style="text-shadow: 0 0 80px rgba(249,115,22,0.5);">Mauricio.</span>
     </h1>
 
     <!-- Subtitle -->
@@ -37,7 +37,7 @@
     <div class="flex items-center gap-3 mb-2">
       <%= link_to pricing_path,
           class: "inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm text-white",
-          style: "background: rgba(220,38,38,0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,100,100,0.3); box-shadow: 0 8px 32px rgba(220,38,38,0.35);" do %>
+          style: "background: rgba(249,115,22,0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,160,60,0.3); box-shadow: 0 8px 32px rgba(249,115,22,0.35);" do %>
         Get Access
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
@@ -70,8 +70,8 @@
         <p class="text-white/40 text-xs mt-1 leading-tight">Pro Level</p>
       </div>
       <div class="rounded-2xl p-4 text-center" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);">
-        <p class="text-2xl font-black text-red-500">ATL</p>
-        <p class="text-white/40 text-xs mt-1 leading-tight">Braves</p>
+        <p class="text-2xl font-black text-orange-500">10+</p>
+        <p class="text-white/40 text-xs mt-1 leading-tight">Seasons</p>
       </div>
     </div>
 
@@ -79,7 +79,7 @@
     <div class="mb-12">
       <h2 class="text-2xl font-black text-white mb-4">About Mauricio</h2>
       <p class="text-white/50 text-sm leading-relaxed">
-        Center fielder for the Atlanta Braves. Formerly Houston Astros. 2x Gold Glove Award winner — one of the best defensive outfielders in Major League Baseball. Now sharing the exact drills and techniques that got him there.
+        Professional outfielder. 2x Gold Glove Award winner and one of the most versatile players in the game. Mauricio built his career through elite preparation — now he's sharing the exact drills and techniques that got him there.
       </p>
     </div>
 
@@ -107,14 +107,14 @@
 </section>
 
 <!-- Bottom CTA -->
-<section class="relative overflow-hidden py-16 px-6" style="background: linear-gradient(135deg, #13274F 0%, #0f1f3d 50%, #1a0a0a 100%);">
-  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 30% 50%, #CE1141 0%, transparent 60%), radial-gradient(circle at 70% 50%, #13274F 0%, transparent 60%);"></div>
+<section class="relative overflow-hidden py-16 px-6 bg-zinc-900">
+  <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 30% 50%, rgba(249,115,22,0.4) 0%, transparent 60%);"></div>
   <div class="relative max-w-lg mx-auto text-center">
     <p class="text-white/40 text-xs tracking-widest uppercase mb-3">Ready to level up</p>
-    <h2 class="text-3xl font-black text-white mb-3">Train like a Brave.</h2>
+    <h2 class="text-3xl font-black text-white mb-3">Train with Mauricio.</h2>
     <p class="text-white/50 text-sm mb-8">Join members getting exclusive access to Mauricio Dubon's training content.</p>
     <%= link_to "Get Access", pricing_path,
         class: "inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white transition",
-        style: "background: rgba(220,38,38,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 8px 40px rgba(220,38,38,0.35);" %>
+        style: "background: rgba(249,115,22,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,160,60,0.2); box-shadow: 0 8px 40px rgba(249,115,22,0.35);" %>
   </div>
 </section>
