@@ -12,26 +12,27 @@
 </head>
 <body class="h-full font-sans antialiased text-white bg-black">
 
-  <!-- Navbar -->
-  <nav class="bg-zinc-900 border-b border-zinc-600/40/50 sticky top-0 z-50">
+  <!-- Navbar — glass morphism -->
+  <nav class="sticky top-0 z-50" style="background: rgba(0,0,0,0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.06);">
     <div class="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between">
       <%= link_to root_path, class: "text-lg font-extrabold tracking-tight text-white" do %>
-        Mauricio<span class="text-red-600">Dubon</span>
+        Mauricio<span class="text-red-500">Dubon</span>
       <% end %>
 
       <div class="flex items-center gap-3 text-sm font-medium">
         <% if user_signed_in? %>
           <% if current_user.admin? %>
-            <%= link_to "Dashboard", admin_root_path, class: "text-zinc-400 hover:text-white" %>
+            <%= link_to "Dashboard", admin_root_path, class: "text-white/60 hover:text-white transition" %>
           <% else %>
-            <%= link_to "Videos", videos_path, class: "text-zinc-400 hover:text-white" %>
+            <%= link_to "Videos", videos_path, class: "text-white/60 hover:text-white transition" %>
           <% end %>
           <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete },
-              class: "text-zinc-600 hover:text-zinc-300 text-xs" %>
+              class: "text-white/30 hover:text-white/60 text-xs transition" %>
         <% else %>
-          <%= link_to "Sign in", new_user_session_path, class: "text-zinc-400 hover:text-white" %>
+          <%= link_to "Sign in", new_user_session_path, class: "text-white/60 hover:text-white transition" %>
           <%= link_to "Get Access", pricing_path,
-              class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full transition font-semibold text-sm" %>
+              class: "px-4 py-2 rounded-full font-bold text-sm text-white",
+              style: "background: rgba(220,38,38,0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 4px 16px rgba(220,38,38,0.25);" %>
         <% end %>
       </div>
     </div>
@@ -40,14 +41,14 @@
   <!-- Flash -->
   <% if notice.present? %>
     <div class="max-w-6xl mx-auto px-5 mt-4">
-      <div class="bg-zinc-800 border border-zinc-600/40 text-zinc-200 px-4 py-3 rounded-xl text-sm">
+      <div class="px-4 py-3 rounded-2xl text-sm text-white" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(8px);">
         <%= notice %>
       </div>
     </div>
   <% end %>
   <% if alert.present? %>
     <div class="max-w-6xl mx-auto px-5 mt-4">
-      <div class="bg-red-950 border border-red-800 text-red-300 px-4 py-3 rounded-xl text-sm">
+      <div class="px-4 py-3 rounded-2xl text-sm text-red-300" style="background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.2); backdrop-filter: blur(8px);">
         <%= alert %>
       </div>
     </div>
