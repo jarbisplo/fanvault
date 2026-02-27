@@ -1,22 +1,22 @@
-<div class="min-h-screen bg-zinc-950 flex items-center justify-center py-12 px-5">
+<div class="min-h-screen bg-black flex items-center justify-center py-12 px-5">
   <div class="w-full max-w-sm">
     <div class="text-center mb-8">
       <h1 class="text-3xl font-bold text-white">Welcome back</h1>
       <p class="text-zinc-500 text-sm mt-2">Sign in to your Dubon Training account</p>
     </div>
 
-    <div class="bg-zinc-900 rounded-3xl border border-zinc-700 p-8">
+    <div class="bg-zinc-800 rounded-3xl border border-zinc-600/40 p-8">
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-5" }) do |f| %>
         <div>
           <%= f.label :email, "Email", class: "block text-sm font-medium text-zinc-300 mb-2" %>
           <%= f.email_field :email, autofocus: true, autocomplete: "email",
-              class: "w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
+              class: "w-full bg-zinc-800 border border-zinc-600/40 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
         </div>
 
         <div>
           <%= f.label :password, "Password", class: "block text-sm font-medium text-zinc-300 mb-2" %>
           <%= f.password_field :password, autocomplete: "current-password",
-              class: "w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
+              class: "w-full bg-zinc-800 border border-zinc-600/40 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
         </div>
 
         <div class="flex items-center justify-between text-sm">

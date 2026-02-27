@@ -4,13 +4,13 @@
       class: "bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition" %>
 </div>
 
-<div class="bg-zinc-900 rounded-2xl border border-zinc-800 shadow-none overflow-hidden">
+<div class="bg-zinc-800 rounded-2xl border border-zinc-600/40/50 shadow-none overflow-hidden">
   <% if @videos.empty? %>
     <div class="py-16 text-center text-zinc-500 text-sm">No videos yet.</div>
   <% else %>
     <table class="w-full text-sm">
       <thead>
-        <tr class="text-xs text-zinc-500 font-medium uppercase tracking-widest border-b border-zinc-800">
+        <tr class="text-xs text-zinc-500 font-medium uppercase tracking-widest border-b border-zinc-600/40/50">
           <th class="text-left px-6 py-3">Title</th>
           <th class="text-left px-6 py-3 hidden md:table-cell">Status</th>
           <th class="text-left px-6 py-3 hidden md:table-cell">Views</th>
@@ -18,9 +18,9 @@
           <th class="px-6 py-3"></th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-zinc-800">
+      <tbody class="divide-y divide-zinc-700/40">
         <% @videos.each do |video| %>
-          <tr class="hover:bg-zinc-950/50">
+          <tr class="hover:bg-black/50">
             <td class="px-6 py-4 text-white font-medium max-w-xs"><%= truncate(video.title, length: 55) %></td>
             <td class="px-6 py-4 hidden md:table-cell">
               <% if video.published? %>

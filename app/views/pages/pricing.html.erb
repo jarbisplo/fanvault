@@ -1,11 +1,11 @@
-<div class="min-h-screen bg-zinc-950 py-20 px-5">
+<div class="min-h-screen bg-black py-20 px-5">
   <div class="max-w-md mx-auto">
     <div class="text-center mb-10">
       <h1 class="text-4xl font-extrabold text-white mb-3">One plan. Full access.</h1>
       <p class="text-zinc-400">Everything in the library. New content every week. Cancel anytime.</p>
     </div>
 
-    <div class="bg-zinc-900 rounded-3xl border border-zinc-700 overflow-hidden">
+    <div class="bg-zinc-800 rounded-3xl border border-zinc-600/40 overflow-hidden">
       <!-- Top band -->
       <div class="bg-orange-500 px-8 py-7 text-white text-center">
         <p class="text-orange-100 text-xs font-semibold uppercase tracking-widest mb-2">Monthly Plan</p>
@@ -36,7 +36,7 @@
 
         <% if user_signed_in? %>
           <% if current_user.active_subscriber? %>
-            <div class="text-center py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-zinc-300 font-semibold text-sm mb-4">
+            <div class="text-center py-3 bg-zinc-800 border border-zinc-600/40 rounded-xl text-zinc-300 font-semibold text-sm mb-4">
               You already have an active subscription
             </div>
             <%= link_to "Watch Videos", videos_path,
