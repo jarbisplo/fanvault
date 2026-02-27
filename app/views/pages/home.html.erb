@@ -1,10 +1,64 @@
 <!-- HERO: Full viewport, text on image, glass buttons -->
 <section class="relative w-full overflow-hidden" style="height: calc(100vh - 52px);">
 
-  <!-- Athlete image — fills entire section -->
-  <%= image_tag "hero-placeholder.jpg",
-      alt: "Mauricio Dubon",
-      class: "absolute inset-0 w-full h-full object-cover object-center" %>
+  <!-- Hero slideshow with Ken Burns pan effect -->
+  <div id="hero-slides" class="absolute inset-0">
+    <% [
+      "https://d9zuehkdkxba0.cloudfront.net/wp-content/uploads/2025/11/Mauricio-Dub%C3%B3n-Jardinero-Izquierdo-noviembre-2025.png",
+      "https://d9zuehkdkxba0.cloudfront.net/wp-content/uploads/2025/11/Mauricio-Dubon-Shortstop-noviembre-2025.png",
+      "https://d9zuehkdkxba0.cloudfront.net/wp-content/uploads/2025/11/Mauricio-Dub%C3%B3n-2x-Golden-Glove-Winner-noviembre-2025.png",
+      "https://d9zuehkdkxba0.cloudfront.net/wp-content/uploads/2025/11/Mauricio-Dub%C3%B3n-Golden-Glove-Winner-noviembre-2025.png"
+    ].each_with_index do |src, i| %>
+      <div class="hero-slide absolute inset-0 overflow-hidden <%= i == 0 ? 'active' : '' %>">
+        <img src="<%= src %>"
+             alt="Mauricio Dubon"
+             class="hero-img absolute inset-0 w-full h-full object-cover object-top"
+             data-dir="<%= i.even? ? 'right' : 'left' %>">
+      </div>
+    <% end %>
+  </div>
+
+  <style>
+    .hero-slide {
+      opacity: 0;
+      transition: opacity 1.8s ease-in-out;
+    }
+    .hero-slide.active {
+      opacity: 1;
+    }
+    @keyframes pan-right {
+      from { transform: scale(1.06) translateX(-1.5%); }
+      to   { transform: scale(1.0)  translateX(1.5%); }
+    }
+    @keyframes pan-left {
+      from { transform: scale(1.06) translateX(1.5%); }
+      to   { transform: scale(1.0)  translateX(-1.5%); }
+    }
+    .hero-slide.active .hero-img[data-dir="right"] {
+      animation: pan-right 7s ease-out forwards;
+    }
+    .hero-slide.active .hero-img[data-dir="left"] {
+      animation: pan-left 7s ease-out forwards;
+    }
+  </style>
+
+  <script>
+    (function() {
+      var slides = document.querySelectorAll('.hero-slide');
+      var current = 0;
+      setInterval(function() {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        var slide = slides[current];
+        slide.classList.add('active');
+        // Restart the pan animation
+        var img = slide.querySelector('.hero-img');
+        img.style.animation = 'none';
+        img.offsetHeight; // force reflow
+        img.style.animation = '';
+      }, 6000);
+    })();
+  </script>
 
   <!-- Layered gradient: subtle top dark + heavy bottom dark -->
   <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/10"></div>
