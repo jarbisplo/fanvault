@@ -6,7 +6,7 @@ class Plan < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   has_many :subscriptions
 
-  enum interval: { monthly: 0, yearly: 1 }
+  enum :interval, { monthly: 0, yearly: 1 }
 
   validates :name, presence: true
   validates :price_cents, presence: true, numericality: { greater_than_or_equal_to: 0 }

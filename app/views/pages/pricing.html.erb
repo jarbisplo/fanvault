@@ -1,0 +1,35 @@
+<div class="max-w-md mx-auto text-center py-16">
+  <h1 class="text-4xl font-extrabold text-white mb-4">One plan. All access.</h1>
+  <p class="text-gray-400 mb-10">Full library of training videos, new content weekly. Cancel anytime.</p>
+
+  <div class="bg-gray-900 border border-blue-600 rounded-2xl p-8 shadow-xl">
+    <div class="text-5xl font-extrabold text-white mb-1">
+      $<%= number_to_human(@plan&.price || 19, precision: 0) %>
+      <span class="text-xl font-normal text-gray-400">/ month</span>
+    </div>
+    <p class="text-gray-500 text-sm mb-8">Billed monthly. Cancel anytime.</p>
+
+    <ul class="text-left space-y-3 mb-8 text-sm text-gray-300">
+      <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Full video library access</li>
+      <li class="flex items-center gap-2"><span class="text-green-400">✓</span> New videos every week</li>
+      <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Stream on any device</li>
+      <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Cancel anytime</li>
+    </ul>
+
+    <% if user_signed_in? %>
+      <% if current_user.active_subscriber? %>
+        <p class="text-green-400 font-semibold">✓ You're already subscribed</p>
+        <%= link_to "Watch Videos →", videos_path, class: "block mt-4 text-blue-400 hover:text-blue-300 text-sm" %>
+      <% else %>
+        <%= link_to "Subscribe with Stripe", subscribe_path, method: :post,
+            class: "block w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition" %>
+      <% end %>
+    <% else %>
+      <%= link_to "Sign up to Subscribe", new_user_registration_path,
+          class: "block w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition" %>
+      <p class="text-gray-500 text-xs mt-3">Already have an account?
+        <%= link_to "Sign in", new_user_session_path, class: "text-blue-400 hover:text-blue-300" %>
+      </p>
+    <% end %>
+  </div>
+</div>

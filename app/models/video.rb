@@ -10,8 +10,8 @@ class Video < ApplicationRecord
   mount_uploader :video_file, VideoUploader
   mount_uploader :thumbnail, ThumbnailUploader
 
-  enum status: { draft: 0, processing: 1, published: 2, archived: 3 }
-  enum visibility: { subscribers_only: 0, public_video: 1 }
+  enum :status, { draft: 0, processing: 1, published: 2, archived: 3 }
+  enum :visibility, { subscribers_only: 0, public_video: 1 }
 
   validates :title, presence: true, length: { maximum: 120 }
   validates :description, length: { maximum: 2000 }

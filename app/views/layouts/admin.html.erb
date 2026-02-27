@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-950">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin · FanVault</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "app", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="h-full flex text-white font-sans antialiased">
+
+  <!-- Sidebar -->
+  <aside class="w-56 bg-gray-900 border-r border-gray-800 flex flex-col shrink-0">
+    <div class="px-5 py-5 border-b border-gray-800">
+      <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">FanVault</p>
+      <p class="font-bold text-white">Admin</p>
+    </div>
+
+    <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+      <%= link_to admin_root_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg #{controller_name == 'dashboard' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'}" do %>
+        📊 Dashboard
+      <% end %>
+      <%= link_to admin_videos_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg #{controller_name == 'videos' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'}" do %>
+        🎥 Videos
+      <% end %>
+      <%= link_to admin_subscribers_path, class: "flex items-center gap-3 px-3 py-2 rounded-lg #{controller_name == 'subscribers' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'}" do %>
+        👥 Subscribers
+      <% end %>
+    </nav>
+
+    <div class="px-3 py-4 border-t border-gray-800">
+      <%= link_to destroy_user_session_path, data: { turbo_method: :delete },
+          class: "flex items-center gap-3 px-3 py-2 rounded-lg text-gray-500 hover:text-white hover:bg-gray-800 text-sm" do %>
+        Sign out
+      <% end %>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <header class="bg-gray-900 border-b border-gray-800 px-6 py-4 flex items-center justify-between shrink-0">
+      <h1 class="text-sm font-medium text-gray-300">
+        <%= content_for?(:page_title) ? yield(:page_title) : controller_name.titleize %>
+      </h1>
+      <div class="flex gap-3">
+        <%= link_to "+ Upload Video", new_admin_video_path,
+            class: "bg-blue-600 hover:bg-blue-500 text-white text-sm px-4 py-2 rounded-lg transition" %>
+      </div>
+    </header>
+
+    <!-- Flashes -->
+    <% if notice.present? %>
+      <div class="mx-6 mt-4 bg-green-900/50 border border-green-700 text-green-300 px-4 py-3 rounded-lg text-sm">
+        <%= notice %>
+      </div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="mx-6 mt-4 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded-lg text-sm">
+        <%= alert %>
+      </div>
+    <% end %>
+
+    <main class="flex-1 overflow-y-auto px-6 py-6">
+      <%= yield %>
+    </main>
+  </div>
+
+</body>
+</html>

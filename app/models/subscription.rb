@@ -8,14 +8,15 @@ class Subscription < ApplicationRecord
   belongs_to :plan, optional: true
   belongs_to :invitation, optional: true
 
-  enum status: { pending: 0, active: 1, cancelled: 2, expired: 3, past_due: 4 }
-  enum kind: { paid: 0, invited: 1 }
+  enum :status, { pending: 0, active: 1, cancelled: 2, expired: 3, past_due: 4 }
+  enum :kind, { paid: 0, invited: 1 }
 
   validates :creator, :subscriber, presence: true
   validates :subscriber_id, uniqueness: { scope: :creator_id, message: 'is already subscribed to this creator' }
   validate :subscriber_is_not_creator
 
   scope :active, -> { where(status: :active) }
+  scope :recent, -> { order(created_at: :desc) }
 
   def self.create_from_invitation!(invitation)
     create!(

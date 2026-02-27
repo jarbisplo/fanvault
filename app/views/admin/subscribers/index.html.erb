@@ -1,0 +1,35 @@
+<div class="flex items-center justify-between mb-8">
+  <h1 class="text-2xl font-bold text-white">Subscribers</h1>
+  <span class="text-gray-500 text-sm"><%= @subscribers.total_count %> active</span>
+</div>
+
+<div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+  <% if @subscribers.empty? %>
+    <div class="p-10 text-center text-gray-500">No subscribers yet.</div>
+  <% else %>
+    <table class="w-full text-sm">
+      <thead class="border-b border-gray-800">
+        <tr class="text-gray-500 text-xs uppercase tracking-widest">
+          <th class="text-left px-5 py-3">Name</th>
+          <th class="text-left px-5 py-3">Email</th>
+          <th class="text-left px-5 py-3 hidden md:table-cell">Subscribed</th>
+          <th class="text-left px-5 py-3 hidden md:table-cell">Renews</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-800">
+        <% @subscribers.each do |sub| %>
+          <tr class="hover:bg-gray-800/40">
+            <td class="px-5 py-4 text-white"><%= sub.subscriber.full_name %></td>
+            <td class="px-5 py-4 text-gray-400"><%= sub.subscriber.email %></td>
+            <td class="px-5 py-4 text-gray-500 hidden md:table-cell"><%= sub.created_at.strftime("%b %d, %Y") %></td>
+            <td class="px-5 py-4 text-gray-500 hidden md:table-cell">
+              <%= sub.current_period_end&.strftime("%b %d, %Y") || "—" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
+<div class="mt-4"><%= paginate @subscribers %></div>

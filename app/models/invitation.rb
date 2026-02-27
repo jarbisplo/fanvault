@@ -7,7 +7,7 @@ class Invitation < ApplicationRecord
   belongs_to :subscriber, class_name: 'User', optional: true
   has_one :subscription
 
-  enum status: { pending: 0, accepted: 1, expired: 2, revoked: 3 }
+  enum :status, { pending: 0, accepted: 1, expired: 2, revoked: 3 }
 
   before_create :generate_token
   before_create :set_expiry

@@ -1,0 +1,42 @@
+<div class="flex items-center justify-between mb-8">
+  <h1 class="text-2xl font-bold text-white">Training Videos</h1>
+  <span class="text-gray-500 text-sm"><%= @videos.total_count %> videos</span>
+</div>
+
+<% if @videos.empty? %>
+  <div class="text-center py-20 text-gray-500">
+    <p class="text-4xl mb-4">🎬</p>
+    <p>No videos yet. Check back soon.</p>
+  </div>
+<% else %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @videos.each do |video| %>
+      <%= link_to video_path(video), class: "group bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-blue-600 transition" do %>
+        <!-- Thumbnail -->
+        <div class="aspect-video bg-gray-800 relative">
+          <% if video.thumbnail.present? %>
+            <img src="<%= video.thumbnail.url %>" class="w-full h-full object-cover" alt="">
+          <% else %>
+            <div class="w-full h-full flex items-center justify-center text-gray-600 text-4xl">▶</div>
+          <% end %>
+          <% if video.duration_seconds %>
+            <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-0.5 rounded">
+              <%= video.formatted_duration %>
+            </span>
+          <% end %>
+        </div>
+        <!-- Info -->
+        <div class="p-4">
+          <h3 class="font-semibold text-white group-hover:text-blue-400 transition line-clamp-2 mb-1">
+            <%= video.title %>
+          </h3>
+          <p class="text-gray-500 text-xs"><%= time_ago_in_words(video.created_at) %> ago</p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="mt-8">
+    <%= paginate @videos %>
+  </div>
+<% end %>
