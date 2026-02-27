@@ -1,39 +1,78 @@
-<div class="bg-black min-h-screen">
-  <div class="max-w-4xl mx-auto px-5 py-8">
-    <!-- Breadcrumb -->
-    <div class="mb-6">
-      <%= link_to "Back to videos", videos_path, class: "text-sm text-zinc-500 hover:text-white font-medium" %>
-    </div>
+<div class="bg-black min-h-screen pb-24">
 
-    <!-- Player -->
-    <div class="bg-black rounded-2xl overflow-hidden shadow-xl mb-7">
-      <video
-        controls
-        controlsList="nodownload"
-        oncontextmenu="return false"
-        class="w-full aspect-video"
-        preload="metadata"
-      >
-        <source src="<%= @video.video_file.url %>" type="video/mp4">
-        Your browser does not support video playback.
-      </video>
-    </div>
-
-    <!-- Title + meta -->
-    <div class="bg-zinc-800 rounded-2xl border border-zinc-600/40/50 shadow-none p-6">
-      <h1 class="text-2xl font-bold text-white mb-2"><%= @video.title %></h1>
-      <p class="text-zinc-500 text-sm mb-5">
-        Posted <%= @video.created_at.strftime("%B %d, %Y") %>
-        <% if @video.views_count > 0 %>
-          &middot; <%= @video.views_count %> views
-        <% end %>
-      </p>
-
-      <% if @video.description.present? %>
-        <div class="border-t border-zinc-600/40/50 pt-5">
-          <p class="text-zinc-300 text-sm leading-relaxed"><%= simple_format @video.description %></p>
-        </div>
-      <% end %>
-    </div>
+  <!-- Player — edge to edge on mobile -->
+  <div class="bg-black" style="aspect-ratio: 16/9;">
+    <video
+      controls
+      controlsList="nodownload"
+      oncontextmenu="return false"
+      class="w-full h-full"
+      preload="metadata"
+      playsinline
+    >
+      <source src="<%= @video.video_file.url %>" type="video/mp4">
+    </video>
   </div>
+
+  <!-- Title + meta -->
+  <div class="px-5 pt-5 pb-4 border-b border-white/5">
+    <% if @video.category %>
+      <p class="text-red-400 text-[10px] font-black tracking-widest uppercase mb-2">
+        <%= Video::CATEGORY_LABELS[@video.category] %>
+      </p>
+    <% end %>
+    <h1 class="text-lg font-black text-white leading-tight mb-2"><%= @video.title %></h1>
+    <p class="text-white/30 text-xs">
+      <%= @video.created_at.strftime("%B %d, %Y") %>
+      <% if @video.views_count > 0 %>
+        &middot; <%= @video.views_count %> views
+      <% end %>
+      <% if @video.duration_seconds %>
+        &middot; <%= @video.formatted_duration %>
+      <% end %>
+    </p>
+  </div>
+
+  <!-- Description -->
+  <% if @video.description.present? %>
+    <div class="px-5 py-5 border-b border-white/5">
+      <p class="text-white/60 text-sm leading-relaxed"><%= simple_format @video.description %></p>
+    </div>
+  <% end %>
+
+  <!-- Up next -->
+  <% if @up_next.any? %>
+    <div class="px-5 pt-6">
+      <h2 class="text-white font-black text-sm mb-4">Up Next</h2>
+      <div class="space-y-3">
+        <% @up_next.each do |video| %>
+          <%= link_to video_path(video), class: "flex gap-3 group" do %>
+            <div class="rounded-xl overflow-hidden shrink-0" style="width: 120px; aspect-ratio: 16/9; background: #111;">
+              <% if video.thumbnail.present? %>
+                <img src="<%= video.thumbnail.url %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" alt="">
+              <% else %>
+                <div class="w-full h-full bg-zinc-900 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-zinc-700" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              <% end %>
+            </div>
+            <div class="flex-1 min-w-0 py-0.5">
+              <% if video.category %>
+                <p class="text-red-400/70 text-[10px] font-bold tracking-widest uppercase mb-1">
+                  <%= Video::CATEGORY_LABELS[video.category] %>
+                </p>
+              <% end %>
+              <p class="text-white text-sm font-semibold leading-snug line-clamp-2 group-hover:text-red-400 transition"><%= video.title %></p>
+              <% if video.duration_seconds %>
+                <p class="text-white/30 text-xs mt-1"><%= video.formatted_duration %></p>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
 </div>

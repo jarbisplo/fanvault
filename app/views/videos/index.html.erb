@@ -1,51 +1,122 @@
-<div class="bg-black min-h-screen">
-  <div class="bg-zinc-800 border-b border-zinc-600/40/50">
-    <div class="max-w-6xl mx-auto px-5 py-7">
-      <h1 class="text-xl font-bold text-white">Training Videos</h1>
-      <p class="text-zinc-500 text-sm mt-1"><%= @videos.total_count %> videos available</p>
-    </div>
+<!-- Member home -->
+<div class="bg-black min-h-screen pb-24">
+
+  <!-- Welcome header -->
+  <div class="px-5 pt-7 pb-5">
+    <p class="text-white/30 text-xs font-bold tracking-widest uppercase mb-1">Welcome back</p>
+    <h1 class="text-2xl font-black text-white"><%= current_user.first_name %></h1>
   </div>
 
-  <div class="max-w-6xl mx-auto px-5 py-8">
-    <% if @videos.empty? %>
-      <div class="text-center py-24 text-zinc-600">
-        <p class="font-medium text-lg">No videos yet. Check back soon.</p>
+  <!-- Featured video -->
+  <% if @featured %>
+    <div class="px-5 mb-8">
+      <%= link_to video_path(@featured), class: "block group" do %>
+        <div class="rounded-2xl overflow-hidden relative" style="aspect-ratio: 16/9; background: #111;">
+          <% if @featured.thumbnail.present? %>
+            <img src="<%= @featured.thumbnail.url %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="">
+          <% else %>
+            <div class="w-full h-full bg-zinc-900"></div>
+          <% end %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+          <!-- Play button -->
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center"
+                 style="background: rgba(220,38,38,0.9); box-shadow: 0 0 40px rgba(220,38,38,0.5);">
+              <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+          <!-- Label -->
+          <div class="absolute top-3 left-3">
+            <span class="text-[10px] font-black tracking-widest uppercase px-2.5 py-1 rounded-full text-white"
+                  style="background: rgba(220,38,38,0.9);">Latest</span>
+          </div>
+          <!-- Title -->
+          <div class="absolute bottom-4 left-4 right-4">
+            <% if @featured.category %>
+              <p class="text-white/50 text-[10px] font-bold tracking-widest uppercase mb-1">
+                <%= Video::CATEGORY_LABELS[@featured.category] %>
+              </p>
+            <% end %>
+            <h2 class="text-white font-black text-base leading-tight"><%= @featured.title %></h2>
+            <% if @featured.duration_seconds %>
+              <p class="text-white/40 text-xs mt-1"><%= @featured.formatted_duration %></p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Category rows -->
+  <% @categories.each do |key, label, videos| %>
+    <div class="mb-8">
+      <div class="flex items-center justify-between px-5 mb-3">
+        <h2 class="text-white font-black text-sm"><%= label %></h2>
+        <span class="text-white/30 text-xs"><%= videos.size %> videos</span>
       </div>
-    <% else %>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <% @videos.each do |video| %>
-          <%= link_to video_path(video), class: "group bg-zinc-800 rounded-2xl overflow-hidden border border-zinc-600/40/50 hover:border-red-600/50 transition" do %>
-            <!-- Thumbnail -->
-            <div class="aspect-video bg-zinc-800 relative overflow-hidden">
+      <div class="flex gap-3 overflow-x-auto px-5 pb-1 no-scrollbar">
+        <% videos.each do |video| %>
+          <%= link_to video_path(video), class: "shrink-0 group", style: "width: 200px;" do %>
+            <div class="rounded-xl overflow-hidden mb-2" style="aspect-ratio: 16/9; background: #111;">
               <% if video.thumbnail.present? %>
                 <img src="<%= video.thumbnail.url %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" alt="">
               <% else %>
-                <div class="w-full h-full flex items-center justify-center">
-                  <div class="w-12 h-12 bg-red-600/20 rounded-full flex items-center justify-center">
-                    <svg class="w-5 h-5 text-red-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                    </svg>
-                  </div>
+                <div class="w-full h-full bg-zinc-900 flex items-center justify-center">
+                  <svg class="w-6 h-6 text-zinc-700" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
                 </div>
               <% end %>
               <% if video.duration_seconds %>
-                <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-0.5 rounded-md font-medium">
-                  <%= video.formatted_duration %>
-                </span>
+                <div class="relative">
+                  <span class="absolute bottom-1.5 right-1.5 bg-black/80 text-white text-[10px] px-1.5 py-0.5 rounded font-medium">
+                    <%= video.formatted_duration %>
+                  </span>
+                </div>
               <% end %>
             </div>
-            <!-- Info -->
-            <div class="p-4">
-              <h3 class="font-semibold text-white group-hover:text-red-400 transition text-sm line-clamp-2 mb-1.5">
-                <%= video.title %>
-              </h3>
-              <p class="text-zinc-500 text-xs"><%= video.created_at.strftime("%B %d, %Y") %></p>
-            </div>
+            <p class="text-white text-xs font-semibold leading-snug line-clamp-2 group-hover:text-red-400 transition"><%= video.title %></p>
           <% end %>
         <% end %>
       </div>
+    </div>
+  <% end %>
 
-      <div class="mt-8"><%= paginate @videos %></div>
-    <% end %>
-  </div>
+  <!-- Uncategorized (catch-all) -->
+  <% if @uncategorized.any? %>
+    <div class="mb-8">
+      <div class="flex items-center justify-between px-5 mb-3">
+        <h2 class="text-white font-black text-sm">More Videos</h2>
+        <span class="text-white/30 text-xs"><%= @uncategorized.size %></span>
+      </div>
+      <div class="flex gap-3 overflow-x-auto px-5 pb-1 no-scrollbar">
+        <% @uncategorized.each do |video| %>
+          <%= link_to video_path(video), class: "shrink-0 group", style: "width: 200px;" do %>
+            <div class="rounded-xl overflow-hidden mb-2" style="aspect-ratio: 16/9; background: #111;">
+              <% if video.thumbnail.present? %>
+                <img src="<%= video.thumbnail.url %>" class="w-full h-full object-cover" alt="">
+              <% else %>
+                <div class="w-full h-full bg-zinc-900 flex items-center justify-center">
+                  <svg class="w-6 h-6 text-zinc-700" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              <% end %>
+            </div>
+            <p class="text-white text-xs font-semibold leading-snug line-clamp-2 group-hover:text-red-400 transition"><%= video.title %></p>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Empty state -->
+  <% if @categories.empty? && @uncategorized.empty? && @featured.nil? %>
+    <div class="text-center py-24 px-5">
+      <p class="text-zinc-600 font-medium">No videos yet — check back soon.</p>
+    </div>
+  <% end %>
+
 </div>

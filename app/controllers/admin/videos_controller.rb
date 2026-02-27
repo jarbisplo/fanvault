@@ -54,7 +54,7 @@ module Admin
     end
 
     def video_params
-      params.require(:video).permit(:title, :description, :video_file, :thumbnail)
+      params.require(:video).permit(:title, :description, :video_file, :thumbnail, :category)
     end
   end
 end
