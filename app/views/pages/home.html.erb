@@ -4,10 +4,10 @@
   <!-- Hero slideshow with Ken Burns pan effect -->
   <div id="hero-slides" class="absolute inset-0">
     <% [
-      "https://d9zuehkdkxba0.cloudfront.net/wp-content/uploads/2025/11/Mauricio-Dub%C3%B3n-Jardinero-Izquierdo-noviembre-2025.png",
-      "https://d9zuehkdkxba0.cloudfront.net/wp-content/uploads/2025/11/Mauricio-Dubon-Shortstop-noviembre-2025.png",
-      "https://d9zuehkdkxba0.cloudfront.net/wp-content/uploads/2025/11/Mauricio-Dub%C3%B3n-2x-Golden-Glove-Winner-noviembre-2025.png",
-      "https://d9zuehkdkxba0.cloudfront.net/wp-content/uploads/2025/11/Mauricio-Dub%C3%B3n-Golden-Glove-Winner-noviembre-2025.png"
+      image_path("dubon-left-field.png"),
+      image_path("dubon-shortstop.png"),
+      image_path("dubon-2x-golden-glove.png"),
+      image_path("dubon-golden-glove.png")
     ].each_with_index do |src, i| %>
       <div class="hero-slide absolute inset-0 overflow-hidden <%= i == 0 ? 'active' : '' %>">
         <img src="<%= src %>"
