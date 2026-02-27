@@ -33,7 +33,7 @@
               class: "text-white/30 hover:text-white/60 text-xs transition bg-transparent border-0 cursor-pointer p-0" %>
         <% else %>
           <%= link_to "Sign in", new_user_session_path, class: "text-white/60 hover:text-white transition" %>
-          <%= link_to "Get Access", pricing_path,
+          <%= link_to "Get Access", new_user_registration_path,
               class: "px-4 py-2 rounded-full font-bold text-sm text-white",
               style: "background: rgba(220,38,38,0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 4px 16px rgba(220,38,38,0.25);" %>
         <% end %>
