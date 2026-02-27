@@ -24,9 +24,10 @@ class VideosController < ApplicationController
     @video = Video.published.find(params[:id])
     hls_path = params[:hls_path]
 
-    # Build the S3 key from the stored hls_url prefix
     prefix   = @video.hls_url.sub('/master.m3u8', '')
     s3_key   = "#{prefix}/#{hls_path}"
+
+    Rails.logger.info "[HLS] #{request.user_agent&.split(' ')&.first} → #{s3_key}"
 
     signed_url = generate_signed_url(s3_key)
     return head :not_found unless signed_url

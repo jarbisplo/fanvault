@@ -28,8 +28,9 @@
         hls.loadSource(hlsSrc);
         hls.attachMedia(video);
       } else if (hlsSrc && video.canPlayType('application/vnd.apple.mpegurl')) {
-        // Safari native HLS
+        // Safari / iOS native HLS
         video.src = hlsSrc;
+        video.load();
       } else if (mp4Src) {
         // Fallback: direct mp4 (dev / pre-transcode)
         video.src = mp4Src;
