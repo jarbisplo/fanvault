@@ -24,15 +24,25 @@ class VideosController < ApplicationController
     @video = Video.published.find(params[:id])
     hls_path = params[:hls_path]
 
-    prefix   = @video.hls_url.sub('/master.m3u8', '')
-    s3_key   = "#{prefix}/#{hls_path}"
+    prefix = @video.hls_url.sub('/master.m3u8', '')
+    s3_key = "#{prefix}/#{hls_path}"
 
     Rails.logger.info "[HLS] #{request.user_agent&.split(' ')&.first} → #{s3_key}"
 
     signed_url = generate_signed_url(s3_key)
     return head :not_found unless signed_url
 
-    redirect_to signed_url, allow_other_host: true, status: :found
+    if hls_path.end_with?('.m3u8')
+      # Stream m3u8 content so hls.js resolves relative URLs against our proxy,
+      # not against the S3 domain (which would bypass signing → 403).
+      require 'net/http'
+      uri  = URI.parse(signed_url)
+      body = Net::HTTP.get(uri)
+      render plain: body, content_type: 'application/vnd.apple.mpegurl'
+    else
+      # .ts segments are binary — a redirect to a signed URL is fine.
+      redirect_to signed_url, allow_other_host: true, status: :found
+    end
   end
 
   private
