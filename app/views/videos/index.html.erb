@@ -7,6 +7,21 @@
     <h1 class="text-2xl font-black text-white"><%= current_user.first_name %></h1>
   </div>
 
+  <!-- Subscribe banner (non-subscribers only) -->
+  <% unless current_user.can_watch? %>
+    <div class="mx-5 mb-6 rounded-2xl overflow-hidden" style="background: linear-gradient(135deg, rgba(220,38,38,0.15) 0%, rgba(185,28,28,0.08) 100%); border: 1px solid rgba(220,38,38,0.25);">
+      <div class="px-5 py-4 flex items-center justify-between gap-4">
+        <div>
+          <p class="text-white font-black text-sm mb-0.5">Unlock the full library</p>
+          <p class="text-white/40 text-xs">Subscribe for $19/month to watch everything.</p>
+        </div>
+        <%= link_to "Subscribe", pricing_path,
+            class: "shrink-0 px-4 py-2 rounded-xl font-black text-white text-xs transition",
+            style: "background: rgba(220,38,38,0.9); box-shadow: 0 4px 16px rgba(220,38,38,0.3);" %>
+      </div>
+    </div>
+  <% end %>
+
   <!-- Featured video -->
   <% if @featured %>
     <div class="px-5 mb-8">
@@ -18,20 +33,33 @@
             <div class="w-full h-full bg-zinc-900"></div>
           <% end %>
           <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
-          <!-- Play button -->
+
+          <!-- Play / Lock button -->
           <div class="absolute inset-0 flex items-center justify-center">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center"
-                 style="background: rgba(220,38,38,0.9); box-shadow: 0 0 40px rgba(220,38,38,0.5);">
-              <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
-            </div>
+            <% if current_user.can_watch? %>
+              <div class="w-14 h-14 rounded-full flex items-center justify-center"
+                   style="background: rgba(220,38,38,0.9); box-shadow: 0 0 40px rgba(220,38,38,0.5);">
+                <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            <% else %>
+              <div class="w-14 h-14 rounded-full flex items-center justify-center"
+                   style="background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15);">
+                <svg class="w-5 h-5 text-white/70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+              </div>
+            <% end %>
           </div>
-          <!-- Label -->
+
+          <!-- Latest badge -->
           <div class="absolute top-3 left-3">
             <span class="text-[10px] font-black tracking-widest uppercase px-2.5 py-1 rounded-full text-white"
                   style="background: rgba(220,38,38,0.9);">Latest</span>
           </div>
+
           <!-- Title -->
           <div class="absolute bottom-4 left-4 right-4">
             <% if @featured.category %>
@@ -59,7 +87,7 @@
       <div class="flex gap-3 overflow-x-auto px-5 pb-1 no-scrollbar">
         <% videos.each do |video| %>
           <%= link_to video_path(video), class: "shrink-0 group", style: "width: 200px;" do %>
-            <div class="rounded-xl overflow-hidden mb-2" style="aspect-ratio: 16/9; background: #111;">
+            <div class="rounded-xl overflow-hidden mb-2 relative" style="aspect-ratio: 16/9; background: #111;">
               <% if video.thumbnail.present? %>
                 <img src="<%= video.thumbnail.url %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" alt="">
               <% else %>
@@ -69,12 +97,21 @@
                   </svg>
                 </div>
               <% end %>
+              <!-- Duration badge -->
               <% if video.duration_seconds %>
-                <div class="relative">
-                  <span class="absolute bottom-1.5 right-1.5 bg-black/80 text-white text-[10px] px-1.5 py-0.5 rounded font-medium">
-                    <%= video.formatted_duration %>
-                  </span>
-                </div>
+                <span class="absolute bottom-1.5 right-1.5 bg-black/80 text-white text-[10px] px-1.5 py-0.5 rounded font-medium">
+                  <%= video.formatted_duration %>
+                </span>
+              <% end %>
+              <!-- Lock badge for non-subscribers -->
+              <% unless current_user.can_watch? %>
+                <span class="absolute top-1.5 left-1.5 w-5 h-5 rounded-full flex items-center justify-center"
+                      style="background: rgba(0,0,0,0.65); border: 1px solid rgba(255,255,255,0.12);">
+                  <svg class="w-2.5 h-2.5 text-white/60" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  </svg>
+                </span>
               <% end %>
             </div>
             <p class="text-white text-xs font-semibold leading-snug line-clamp-2 group-hover:text-red-400 transition"><%= video.title %></p>
@@ -84,7 +121,7 @@
     </div>
   <% end %>
 
-  <!-- Uncategorized (catch-all) -->
+  <!-- Uncategorized -->
   <% if @uncategorized.any? %>
     <div class="mb-8">
       <div class="flex items-center justify-between px-5 mb-3">
@@ -94,15 +131,24 @@
       <div class="flex gap-3 overflow-x-auto px-5 pb-1 no-scrollbar">
         <% @uncategorized.each do |video| %>
           <%= link_to video_path(video), class: "shrink-0 group", style: "width: 200px;" do %>
-            <div class="rounded-xl overflow-hidden mb-2" style="aspect-ratio: 16/9; background: #111;">
+            <div class="rounded-xl overflow-hidden mb-2 relative" style="aspect-ratio: 16/9; background: #111;">
               <% if video.thumbnail.present? %>
-                <img src="<%= video.thumbnail.url %>" class="w-full h-full object-cover" alt="">
+                <img src="<%= video.thumbnail.url %>" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" alt="">
               <% else %>
                 <div class="w-full h-full bg-zinc-900 flex items-center justify-center">
                   <svg class="w-6 h-6 text-zinc-700" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                   </svg>
                 </div>
+              <% end %>
+              <% unless current_user.can_watch? %>
+                <span class="absolute top-1.5 left-1.5 w-5 h-5 rounded-full flex items-center justify-center"
+                      style="background: rgba(0,0,0,0.65); border: 1px solid rgba(255,255,255,0.12);">
+                  <svg class="w-2.5 h-2.5 text-white/60" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  </svg>
+                </span>
               <% end %>
             </div>
             <p class="text-white text-xs font-semibold leading-snug line-clamp-2 group-hover:text-red-400 transition"><%= video.title %></p>

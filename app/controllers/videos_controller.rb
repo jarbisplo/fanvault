@@ -1,6 +1,6 @@
 class VideosController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_access!
+  before_action :require_access!, only: [:hls_proxy]  # hard lock — never serve video data to non-subscribers
 
   def index
     @featured   = Video.published.recent.first

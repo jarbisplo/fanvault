@@ -1,48 +1,84 @@
 <div class="bg-black min-h-screen pb-24">
 
-  <!-- Player — edge to edge on mobile -->
-  <div class="bg-black" style="aspect-ratio: 16/9;">
-    <video
-      id="video-player"
-      controls
-      controlsList="nodownload"
-      oncontextmenu="return false"
-      class="w-full h-full"
-      preload="metadata"
-      playsinline
-      data-hls="<%= @video.hls_ready? ? hls_video_path(@video, hls_path: 'master.m3u8') : '' %>"
-      data-fallback="<%= @video.video_file.url %>"
-    >
-    </video>
-  </div>
+  <% if current_user.can_watch? %>
+    <!-- Player — edge to edge on mobile -->
+    <div class="bg-black" style="aspect-ratio: 16/9;">
+      <video
+        id="video-player"
+        controls
+        controlsList="nodownload"
+        oncontextmenu="return false"
+        class="w-full h-full"
+        preload="metadata"
+        playsinline
+        data-hls="<%= @video.hls_ready? ? hls_video_path(@video, hls_path: 'master.m3u8') : '' %>"
+        data-fallback="<%= @video.video_file.url %>"
+      >
+      </video>
+    </div>
 
-  <script src="/hls.min.js"></script>
-  <script>
-    (function() {
-      var video  = document.getElementById('video-player');
-      var hlsSrc = video.dataset.hls;
-      var mp4Src = video.dataset.fallback;
+    <script src="/hls.min.js"></script>
+    <script>
+      (function() {
+        var video  = document.getElementById('video-player');
+        var hlsSrc = video.dataset.hls;
+        var mp4Src = video.dataset.fallback;
 
-      function loadFallback() {
-        if (mp4Src) { video.src = mp4Src; video.load(); }
-      }
+        function loadFallback() {
+          if (mp4Src) { video.src = mp4Src; video.load(); }
+        }
 
-      if (hlsSrc && typeof Hls !== 'undefined' && Hls.isSupported()) {
-        var hls = new Hls({ enableWorker: false, maxMaxBufferLength: 30 });
-        hls.on(Hls.Events.ERROR, function(e, data) {
-          if (data.fatal) { console.error('[HLS fatal]', data); loadFallback(); }
-        });
-        hls.loadSource(hlsSrc);
-        hls.attachMedia(video);
-      } else if (hlsSrc && video.canPlayType('application/vnd.apple.mpegurl')) {
-        // Safari / iOS native HLS
-        video.src = hlsSrc;
-        video.load();
-      } else {
-        loadFallback();
-      }
-    })();
-  </script>
+        if (hlsSrc && typeof Hls !== 'undefined' && Hls.isSupported()) {
+          var hls = new Hls({ enableWorker: false, maxMaxBufferLength: 30 });
+          hls.on(Hls.Events.ERROR, function(e, data) {
+            if (data.fatal) { console.error('[HLS fatal]', data); loadFallback(); }
+          });
+          hls.loadSource(hlsSrc);
+          hls.attachMedia(video);
+        } else if (hlsSrc && video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = hlsSrc;
+          video.load();
+        } else {
+          loadFallback();
+        }
+      })();
+    </script>
+
+  <% else %>
+    <!-- Paywall — shown instead of player for non-subscribers -->
+    <div class="relative bg-black overflow-hidden" style="aspect-ratio: 16/9;">
+      <!-- Blurred thumbnail background -->
+      <% if @video.thumbnail.present? %>
+        <img src="<%= @video.thumbnail.url %>"
+             class="absolute inset-0 w-full h-full object-cover"
+             style="filter: blur(12px) brightness(0.3); transform: scale(1.1);"
+             alt="">
+      <% else %>
+        <div class="absolute inset-0 bg-zinc-900"></div>
+      <% end %>
+
+      <!-- Paywall content -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+        <!-- Lock icon -->
+        <div class="w-14 h-14 rounded-full flex items-center justify-center mb-4"
+             style="background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3);">
+          <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </div>
+
+        <h2 class="text-white font-black text-lg mb-1">Members only</h2>
+        <p class="text-white/50 text-sm mb-5">Subscribe to watch this video and everything else in the library.</p>
+
+        <%= link_to "Subscribe — $19 / month", pricing_path,
+            class: "inline-block px-6 py-3 rounded-2xl font-black text-white text-sm transition",
+            style: "background: rgba(220,38,38,0.9); box-shadow: 0 8px 24px rgba(220,38,38,0.35);" %>
+
+        <p class="text-white/30 text-xs mt-3">Cancel anytime. No commitment.</p>
+      </div>
+    </div>
+  <% end %>
 
   <!-- Title + meta -->
   <div class="px-5 pt-5 pb-4 border-b border-white/5">
