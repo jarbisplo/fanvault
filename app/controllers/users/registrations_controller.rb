@@ -10,6 +10,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def after_sign_up_path_for(resource)
-    pricing_path
+    WelcomeMailer.welcome(resource).deliver_later
+    videos_path
   end
 end

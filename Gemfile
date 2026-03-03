@@ -18,6 +18,7 @@ gem 'bootsnap', require: false
 
 # Auth
 gem 'devise'
+gem 'mailgun_rails'
 
 # Authorization
 gem 'pundit'
@@ -57,6 +58,7 @@ group :development do
   gem 'web-console'
   gem 'bullet'              # N+1 query detection
   gem 'annotate'
+  gem 'letter_opener'       # Preview emails in browser instead of sending
 end
 
 group :test do

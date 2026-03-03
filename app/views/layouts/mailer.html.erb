@@ -2,12 +2,43 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <style>
-      /* Email styles need to be inline */
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Like Dubi</title>
   </head>
+  <body style="margin:0; padding:0; background-color:#f4f4f5; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; font-size:16px; line-height:1.6; color:#18181b;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#f4f4f5;">
+      <tr>
+        <td>
+          <div style="max-width:600px; margin:0 auto;">
 
-  <body>
-    <%= yield %>
+            <!-- Header -->
+            <div style="background-color:#09090b; text-align:center; padding:32px 30px 28px;">
+              <h1 style="color:#ffffff; font-size:28px; font-weight:900; margin:0; letter-spacing:-0.5px;">
+                Train Like <span style="color:#ef4444;">Dubi.</span>
+              </h1>
+              <p style="color:#71717a; font-size:13px; margin:6px 0 0;">trainlikedubi.com</p>
+            </div>
+
+            <!-- Body -->
+            <div style="background-color:#ffffff; padding:40px 36px;">
+              <%= yield %>
+            </div>
+
+            <!-- Footer -->
+            <div style="background-color:#f4f4f5; padding:24px 30px; text-align:center; border-top:1px solid #e4e4e7;">
+              <p style="color:#a1a1aa; font-size:13px; margin:0 0 6px;">
+                You're receiving this because you have an account on Train Like Dubi.
+              </p>
+              <p style="color:#a1a1aa; font-size:13px; margin:0;">
+                <a href="https://trainlikedubi.com" style="color:#ef4444; text-decoration:none;">trainlikedubi.com</a>
+                &nbsp;·&nbsp;
+                <a href="mailto:support@trainlikedubi.com" style="color:#ef4444; text-decoration:none;">support@trainlikedubi.com</a>
+              </p>
+            </div>
+
+          </div>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>

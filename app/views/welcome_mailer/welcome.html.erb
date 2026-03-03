@@ -1,0 +1,24 @@
+<h2 style="color:#18181b; font-size:22px; font-weight:700; margin:0 0 16px;">
+  Welcome, <%= @user.first_name.presence || @user.username %>.
+</h2>
+
+<p style="color:#52525b; font-size:15px; margin:0 0 16px;">
+  You're in. Your Train Like Dubi account is ready.
+</p>
+
+<p style="color:#52525b; font-size:15px; margin:0 0 24px;">
+  Inside you'll find exclusive training videos from Mauricio Dubón — Gold Glove outfielder, World Series champion, and the hardest worker in the room. Everything he's learned, straight to you.
+</p>
+
+<p style="text-align:center; margin:0 0 28px;">
+  <%= link_to "Start Watching",
+      videos_url,
+      style: "display:inline-block; padding:14px 32px; background-color:#dc2626; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:700; font-size:15px;" %>
+</p>
+
+<hr style="border:none; border-top:1px solid #e4e4e7; margin:0 0 20px;">
+
+<p style="color:#71717a; font-size:13px; margin:0;">
+  Questions? Reply to this email or reach us at
+  <a href="mailto:support@trainlikedubi.com" style="color:#ef4444; text-decoration:none;">support@trainlikedubi.com</a>.
+</p>
