@@ -2,6 +2,26 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # Allow login with username OR email
+  attr_writer :login
+
+  def login
+    @login || username || email
+  end
+
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    login = conditions.delete(:login)
+    if login
+      where(conditions).where(
+        "lower(username) = :val OR lower(email) = :val",
+        val: login.downcase
+      ).first
+    else
+      where(conditions).first
+    end
+  end
+
   # Pay gem for Stripe subscriptions
   pay_customer
 
