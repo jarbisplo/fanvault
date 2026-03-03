@@ -1,0 +1,29 @@
+<h2 style="color:#18181b; font-size:22px; font-weight:700; margin:0 0 16px;">New video just dropped.</h2>
+
+<p style="color:#52525b; font-size:15px; margin:0 0 16px;">
+  Hey <%= @user.first_name.presence || @user.username %> —
+</p>
+
+<p style="color:#52525b; font-size:15px; margin:0 0 8px;">
+  Mauricio just posted a new video:
+</p>
+
+<div style="background-color:#f4f4f5; border-left:4px solid #dc2626; border-radius:4px; padding:16px 20px; margin:0 0 24px;">
+  <p style="color:#18181b; font-size:16px; font-weight:700; margin:0 0 4px;"><%= @video.title %></p>
+  <% if @video.description.present? %>
+    <p style="color:#71717a; font-size:14px; margin:0;"><%= truncate(@video.description, length: 120) %></p>
+  <% end %>
+</div>
+
+<p style="text-align:center; margin:0 0 28px;">
+  <%= link_to "Watch Now",
+      video_url(@video),
+      style: "display:inline-block; padding:14px 32px; background-color:#dc2626; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:700; font-size:15px;" %>
+</p>
+
+<hr style="border:none; border-top:1px solid #e4e4e7; margin:0 0 20px;">
+
+<p style="color:#71717a; font-size:13px; margin:0;">
+  You're getting this because you're subscribed to Train Like Dubi.
+  Questions? <a href="mailto:support@trainlikedubi.com" style="color:#ef4444; text-decoration:none;">Contact us</a>.
+</p>
