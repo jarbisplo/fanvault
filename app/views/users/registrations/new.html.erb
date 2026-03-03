@@ -29,6 +29,14 @@
         </div>
 
         <div>
+          <%= f.label :username, "Username", class: "block text-xs font-bold text-white/40 uppercase tracking-widest mb-2" %>
+          <%= f.text_field :username, autocomplete: "username",
+              placeholder: "e.g. dubonfan",
+              class: "w-full px-4 py-3 rounded-xl text-white text-sm focus:outline-none",
+              style: "background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);" %>
+        </div>
+
+        <div>
           <%= f.label :email, "Email", class: "block text-xs font-bold text-white/40 uppercase tracking-widest mb-2" %>
           <%= f.email_field :email, autocomplete: "email",
               class: "w-full px-4 py-3 rounded-xl text-white text-sm focus:outline-none",
@@ -38,6 +46,13 @@
         <div>
           <%= f.label :password, "Password", class: "block text-xs font-bold text-white/40 uppercase tracking-widest mb-2" %>
           <%= f.password_field :password, autocomplete: "new-password",
+              class: "w-full px-4 py-3 rounded-xl text-white text-sm focus:outline-none",
+              style: "background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);" %>
+        </div>
+
+        <div>
+          <%= f.label :password_confirmation, "Confirm Password", class: "block text-xs font-bold text-white/40 uppercase tracking-widest mb-2" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password",
               class: "w-full px-4 py-3 rounded-xl text-white text-sm focus:outline-none",
               style: "background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);" %>
         </div>
