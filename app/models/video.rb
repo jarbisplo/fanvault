@@ -41,10 +41,12 @@ class Video < ApplicationRecord
   after_commit :enqueue_processing, on: :create
 
   def accessible_by?(user)
+    return true if free?
     return true if visibility == 'public_video'
     return false if user.nil?
+    return true if user.admin?
     return true if user == creator
-    user.active_subscription_for?(creator)
+    user.active_subscriber?
   end
 
   def stream_url

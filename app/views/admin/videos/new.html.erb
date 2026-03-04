@@ -35,10 +35,58 @@
 
       <div>
         <%= f.label :video_file, "Video File", class: "block text-sm font-semibold text-zinc-300 mb-2" %>
-        <label id="video-drop-zone" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-zinc-600/40 rounded-xl cursor-pointer hover:border-red-600 transition bg-black">
-          <p class="text-zinc-500 text-sm" id="video-label">Click to select video file</p>
-          <p class="text-gray-300 text-xs mt-1">MP4, MOV, MKV — max 5 GB</p>
+
+        <!-- Drop zone: idle state -->
+        <label id="video-drop-zone" class="relative flex flex-col items-center justify-center w-full border-2 border-dashed border-zinc-700 rounded-xl cursor-pointer hover:border-red-500 transition-all bg-zinc-950 overflow-hidden" style="min-height: 120px;">
+
+          <!-- Idle placeholder -->
+          <div id="upload-placeholder" class="flex flex-col items-center justify-center py-8 px-4 text-center">
+            <svg class="w-8 h-8 text-zinc-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M15 10l4.553-2.069A1 1 0 0121 8.882v6.236a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+            </svg>
+            <p class="text-zinc-400 text-sm font-medium">Click to select video file</p>
+            <p class="text-zinc-600 text-xs mt-1">MP4, MOV, MKV — max 5 GB</p>
+          </div>
+
+          <!-- Preview state (hidden until file selected) -->
+          <div id="upload-preview" class="hidden w-full">
+            <!-- Frame preview -->
+            <div class="relative w-full" style="aspect-ratio: 16/9; background: #000;">
+              <canvas id="frame-canvas" class="w-full h-full object-cover"></canvas>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+              <!-- File info overlay -->
+              <div class="absolute bottom-0 left-0 right-0 px-4 py-3">
+                <p id="file-name" class="text-white text-sm font-bold truncate"></p>
+                <p id="file-meta" class="text-white/50 text-xs mt-0.5"></p>
+              </div>
+              <!-- Green check -->
+              <div class="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center bg-green-500/90">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+            </div>
+            <p class="text-center text-zinc-500 text-xs py-2">Tap to change file</p>
+          </div>
+
           <%= f.file_field :video_file, accept: "video/*", class: "hidden", id: "video-input" %>
+        </label>
+
+        <!-- Hidden video element for frame extraction -->
+        <video id="frame-extractor" class="hidden" muted playsinline preload="metadata"></video>
+        <canvas id="frame-canvas-offscreen" class="hidden"></canvas>
+      </div>
+
+      <!-- Free toggle -->
+      <div class="flex items-center justify-between p-4 rounded-xl" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+        <div>
+          <p class="text-sm font-semibold text-zinc-300">Free video</p>
+          <p class="text-xs text-zinc-500 mt-0.5">Anyone can watch — no subscription required</p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <%= f.check_box :free, class: "sr-only peer" %>
+          <div class="w-11 h-6 rounded-full peer bg-zinc-700 peer-checked:bg-red-600 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
         </label>
       </div>
 
@@ -56,7 +104,49 @@
 
 <script>
   document.getElementById('video-input').addEventListener('change', function(e) {
-    const name = e.target.files[0]?.name;
-    if (name) document.getElementById('video-label').textContent = name;
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const zone      = document.getElementById('video-drop-zone');
+    const placeholder = document.getElementById('upload-placeholder');
+    const preview   = document.getElementById('upload-preview');
+    const nameEl    = document.getElementById('file-name');
+    const metaEl    = document.getElementById('file-meta');
+    const canvas    = document.getElementById('frame-canvas');
+    const extractor = document.getElementById('frame-extractor');
+
+    // File size label
+    const mb = (file.size / 1024 / 1024).toFixed(1);
+    nameEl.textContent = file.name;
+    metaEl.textContent = mb + ' MB';
+
+    // Show preview, hide placeholder
+    placeholder.classList.add('hidden');
+    preview.classList.remove('hidden');
+    zone.classList.remove('border-zinc-700');
+    zone.classList.add('border-green-500/60');
+
+    // Extract a frame at ~2s using canvas
+    const url = URL.createObjectURL(file);
+    extractor.src = url;
+    extractor.currentTime = 0;
+
+    extractor.addEventListener('loadedmetadata', function() {
+      const dur = extractor.duration;
+      const seek = Math.min(2, dur * 0.05);
+      extractor.currentTime = seek;
+      // Append duration to meta
+      const mins = Math.floor(dur / 60);
+      const secs = Math.floor(dur % 60).toString().padStart(2,'0');
+      metaEl.textContent = mb + ' MB · ' + mins + ':' + secs;
+    }, { once: true });
+
+    extractor.addEventListener('seeked', function() {
+      canvas.width  = extractor.videoWidth  || 640;
+      canvas.height = extractor.videoHeight || 360;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(extractor, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+    }, { once: true });
   });
 </script>

@@ -7,6 +7,7 @@ FactoryBot.define do
     visibility  { :subscribers_only }
     category    { :physical_training }
     duration_seconds { 300 }
+    free             { false }
 
     # Skip file-presence validation in tests — we're not testing uploads here
     to_create { |instance| instance.save!(validate: false) }

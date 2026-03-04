@@ -1,6 +1,6 @@
 <div class="bg-black min-h-screen pb-24">
 
-  <% if current_user.can_watch? %>
+  <% if @video.accessible_by?(current_user) %>
     <!-- Player — edge to edge on mobile -->
     <div class="bg-black" style="aspect-ratio: 16/9;">
       <video
@@ -82,11 +82,17 @@
 
   <!-- Title + meta -->
   <div class="px-5 pt-5 pb-4 border-b border-white/5">
-    <% if @video.category %>
-      <p class="text-red-400 text-[10px] font-black tracking-widest uppercase mb-2">
-        <%= Video::CATEGORY_LABELS[@video.category] %>
-      </p>
-    <% end %>
+    <div class="flex items-center gap-2 mb-2">
+      <% if @video.category %>
+        <p class="text-red-400 text-[10px] font-black tracking-widest uppercase">
+          <%= Video::CATEGORY_LABELS[@video.category] %>
+        </p>
+      <% end %>
+      <% if @video.free? %>
+        <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wide text-white"
+              style="background: rgba(22,163,74,0.85);">Free</span>
+      <% end %>
+    </div>
     <h1 class="text-lg font-black text-white leading-tight mb-2"><%= @video.title %></h1>
     <p class="text-white/30 text-xs">
       <%= @video.created_at.strftime("%B %d, %Y") %>

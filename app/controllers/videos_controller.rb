@@ -1,6 +1,6 @@
 class VideosController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_access!, only: [:hls_proxy]  # hard lock — never serve video data to non-subscribers
+  before_action :check_hls_access!, only: [:hls_proxy]  # hard lock — never serve video data without access
 
   def index
     @featured   = Video.published.recent.first
@@ -47,9 +47,10 @@ class VideosController < ApplicationController
 
   private
 
-  def require_access!
-    unless current_user.can_watch?
-      redirect_to pricing_path, alert: 'Subscribe to access the videos.'
+  def check_hls_access!
+    video = Video.published.find_by(id: params[:id])
+    unless video&.accessible_by?(current_user)
+      head :forbidden
     end
   end
 

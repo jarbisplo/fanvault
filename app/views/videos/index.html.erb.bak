@@ -103,11 +103,8 @@
                   <%= video.formatted_duration %>
                 </span>
               <% end %>
-              <!-- Free / Lock badge -->
-              <% if video.free? %>
-                <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wide text-white"
-                      style="background: rgba(22,163,74,0.85);">Free</span>
-              <% elsif !video.accessible_by?(current_user) %>
+              <!-- Lock badge for non-subscribers -->
+              <% unless video.accessible_by?(current_user) %>
                 <span class="absolute top-1.5 left-1.5 w-5 h-5 rounded-full flex items-center justify-center"
                       style="background: rgba(0,0,0,0.65); border: 1px solid rgba(255,255,255,0.12);">
                   <svg class="w-2.5 h-2.5 text-white/60" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -144,15 +141,12 @@
                   </svg>
                 </div>
               <% end %>
-              <% if video.free? %>
-                <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wide text-white"
-                      style="background: rgba(22,163,74,0.85);">Free</span>
-              <% elsif !video.accessible_by?(current_user) %>
+              <% unless video.accessible_by?(current_user) %>
                 <span class="absolute top-1.5 left-1.5 w-5 h-5 rounded-full flex items-center justify-center"
                       style="background: rgba(0,0,0,0.65); border: 1px solid rgba(255,255,255,0.12);">
                   <svg class="w-2.5 h-2.5 text-white/60" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M12 15v2m-6 4h12a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                   </svg>
                 </span>
               <% end %>
