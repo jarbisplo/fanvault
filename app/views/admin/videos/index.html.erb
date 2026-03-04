@@ -1,56 +1,240 @@
+<%# ── Header ───────────────────────────────────────────────────────── %>
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-xl font-bold text-white">All Videos</h1>
-  <%= link_to "Upload Video", new_admin_video_path,
-      class: "bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition" %>
+  <div class="flex items-center gap-3">
+    <%# View toggle %>
+    <div class="flex items-center bg-zinc-800 rounded-xl p-1 border border-zinc-700/50">
+      <button id="btn-list" onclick="setView('list')"
+              class="view-toggle-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        List
+      </button>
+      <button id="btn-grid" onclick="setView('grid')"
+              class="view-toggle-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+        </svg>
+        Grid
+      </button>
+    </div>
+    <%= link_to "Upload Video", new_admin_video_path,
+        class: "bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition" %>
+  </div>
 </div>
 
-<div class="bg-zinc-800 rounded-2xl border border-zinc-600/40/50 shadow-none overflow-hidden">
+<%# ── LIST VIEW ───────────────────────────────────────────────────── %>
+<div id="view-list">
+  <div class="bg-zinc-800 rounded-2xl border border-zinc-700/40 overflow-hidden">
+    <% if @videos.empty? %>
+      <div class="py-16 text-center text-zinc-500 text-sm">No videos yet.</div>
+    <% else %>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-xs text-zinc-500 font-medium uppercase tracking-widest border-b border-zinc-700/40">
+            <th class="text-left px-4 py-3" style="width:80px;"></th>
+            <th class="text-left px-4 py-3">Title</th>
+            <th class="text-left px-4 py-3 hidden md:table-cell">Category</th>
+            <th class="text-left px-4 py-3 hidden md:table-cell">Status</th>
+            <th class="text-left px-4 py-3 hidden md:table-cell">Views</th>
+            <th class="text-left px-4 py-3 hidden md:table-cell">Uploaded</th>
+            <th class="px-4 py-3"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-zinc-700/30">
+          <% @videos.each do |video| %>
+            <tr class="hover:bg-black/30 transition-colors">
+              <%# Thumbnail %>
+              <td class="px-4 py-3">
+                <div class="rounded-lg overflow-hidden bg-zinc-900" style="width:72px; aspect-ratio:16/9; min-width:72px;">
+                  <% if video.thumbnail.present? %>
+                    <img src="<%= video.thumbnail.small.url %>" class="w-full h-full object-cover" alt="" />
+                  <% else %>
+                    <div class="w-full h-full flex items-center justify-center">
+                      <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.069A1 1 0 0121 8.882v6.236a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+                      </svg>
+                    </div>
+                  <% end %>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-white font-medium max-w-xs">
+                <%= truncate(video.title, length: 50) %>
+                <% if video.free? %>
+                  <span class="ml-1.5 text-[9px] font-bold bg-emerald-600/15 text-emerald-400 border border-emerald-600/20 px-1.5 py-0.5 rounded-full">FREE</span>
+                <% end %>
+              </td>
+              <td class="px-4 py-3 hidden md:table-cell">
+                <span class="text-xs text-zinc-400 bg-zinc-700/50 px-2 py-1 rounded-full">
+                  <%= Video::CATEGORY_LABELS[video.category] || video.category.to_s.humanize %>
+                </span>
+              </td>
+              <td class="px-4 py-3 hidden md:table-cell">
+                <% if video.published? %>
+                  <span class="text-xs bg-red-600/10 text-red-400 px-2.5 py-1 rounded-full font-medium">Live</span>
+                <% elsif video.processing? %>
+                  <span class="text-xs bg-yellow-600/10 text-yellow-400 px-2.5 py-1 rounded-full font-medium">Processing</span>
+                <% else %>
+                  <span class="text-xs bg-zinc-700/50 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Draft</span>
+                <% end %>
+              </td>
+              <td class="px-4 py-3 text-zinc-500 hidden md:table-cell"><%= video.views_count %></td>
+              <td class="px-4 py-3 text-zinc-500 hidden md:table-cell"><%= video.created_at.strftime("%b %d, %Y") %></td>
+              <td class="px-4 py-3">
+                <div class="flex items-center justify-end gap-3">
+                  <% if video.published? %>
+                    <%= button_to "Unpublish", unpublish_admin_video_path(video), method: :patch,
+                        class: "text-yellow-500 hover:underline text-xs font-medium bg-transparent border-0 cursor-pointer" %>
+                  <% elsif !video.processing? %>
+                    <%= button_to "Publish", publish_admin_video_path(video), method: :patch,
+                        class: "text-red-400 hover:underline text-xs font-medium bg-transparent border-0 cursor-pointer" %>
+                  <% end %>
+                  <%= link_to "Edit", edit_admin_video_path(video), class: "text-zinc-500 hover:text-white text-xs font-medium" %>
+                  <%= button_to "Delete", admin_video_path(video), method: :delete,
+                      data: { turbo_confirm: "Delete \"#{video.title}\"?" },
+                      class: "text-red-400/70 hover:text-red-400 text-xs font-medium bg-transparent border-0 cursor-pointer" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>
+
+<%# ── GRID VIEW ───────────────────────────────────────────────────── %>
+<div id="view-grid" class="hidden">
   <% if @videos.empty? %>
     <div class="py-16 text-center text-zinc-500 text-sm">No videos yet.</div>
   <% else %>
-    <table class="w-full text-sm">
-      <thead>
-        <tr class="text-xs text-zinc-500 font-medium uppercase tracking-widest border-b border-zinc-600/40/50">
-          <th class="text-left px-6 py-3">Title</th>
-          <th class="text-left px-6 py-3 hidden md:table-cell">Status</th>
-          <th class="text-left px-6 py-3 hidden md:table-cell">Views</th>
-          <th class="text-left px-6 py-3 hidden md:table-cell">Uploaded</th>
-          <th class="px-6 py-3"></th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-zinc-700/40">
-        <% @videos.each do |video| %>
-          <tr class="hover:bg-black/50">
-            <td class="px-6 py-4 text-white font-medium max-w-xs"><%= truncate(video.title, length: 55) %></td>
-            <td class="px-6 py-4 hidden md:table-cell">
-              <% if video.published? %>
-                <span class="text-xs bg-red-600/10 text-red-400 px-2.5 py-1 rounded-full font-medium">Live</span>
-              <% else %>
-                <span class="text-xs bg-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Draft</span>
-              <% end %>
-            </td>
-            <td class="px-6 py-4 text-zinc-500 hidden md:table-cell"><%= video.views_count %></td>
-            <td class="px-6 py-4 text-zinc-500 hidden md:table-cell"><%= video.created_at.strftime("%b %d, %Y") %></td>
-            <td class="px-6 py-4">
-              <div class="flex items-center justify-end gap-3">
-                <% if video.published? %>
-                  <%= button_to "Unpublish", unpublish_admin_video_path(video), method: :patch,
-                      class: "text-yellow-600 hover:underline text-xs font-medium bg-transparent border-0 cursor-pointer" %>
+    <%# Group by category %>
+    <% grouped = @videos.group_by(&:category) %>
+    <% Video::CATEGORY_LABELS.each do |cat_key, cat_label| %>
+      <% vids = grouped[cat_key] || [] %>
+      <% next if vids.empty? %>
+
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-4">
+          <h2 class="text-sm font-bold text-white"><%= cat_label %></h2>
+          <span class="text-xs text-zinc-600"><%= vids.size %> <%= 'video'.pluralize(vids.size) %></span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <% vids.each do |video| %>
+            <div class="bg-zinc-800 rounded-xl overflow-hidden border border-zinc-700/40 group relative flex flex-col">
+              <%# Thumbnail %>
+              <div class="relative overflow-hidden bg-zinc-900" style="aspect-ratio:16/9;">
+                <% if video.thumbnail.present? %>
+                  <img src="<%= video.thumbnail.medium.url %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="" />
                 <% else %>
-                  <%= button_to "Publish", publish_admin_video_path(video), method: :patch,
-                      class: "text-red-400 hover:underline text-xs font-medium bg-transparent border-0 cursor-pointer" %>
+                  <div class="w-full h-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.069A1 1 0 0121 8.882v6.236a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+                    </svg>
+                  </div>
                 <% end %>
-                <%= link_to "Edit", edit_admin_video_path(video), class: "text-zinc-500 hover:text-white text-xs font-medium" %>
-                <%= button_to "Delete", admin_video_path(video), method: :delete,
-                    data: { turbo_confirm: "Delete this video?" },
-                    class: "text-red-400 hover:text-red-600 text-xs font-medium bg-transparent border-0 cursor-pointer" %>
+                <%# Status badge %>
+                <div class="absolute top-2 left-2">
+                  <% if video.published? %>
+                    <span class="text-[9px] font-bold bg-red-600 text-white px-2 py-0.5 rounded-full">LIVE</span>
+                  <% elsif video.processing? %>
+                    <span class="text-[9px] font-bold bg-yellow-500 text-black px-2 py-0.5 rounded-full">PROCESSING</span>
+                  <% else %>
+                    <span class="text-[9px] font-bold bg-black/60 text-zinc-300 border border-zinc-600 px-2 py-0.5 rounded-full">DRAFT</span>
+                  <% end %>
+                </div>
+                <% if video.free? %>
+                  <div class="absolute top-2 right-2">
+                    <span class="text-[9px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded-full">FREE</span>
+                  </div>
+                <% end %>
               </div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+
+              <%# Info %>
+              <div class="p-3 flex-1 flex flex-col">
+                <p class="text-white text-xs font-semibold leading-tight line-clamp-2 flex-1"><%= video.title %></p>
+                <div class="flex items-center justify-between mt-2 pt-2 border-t border-zinc-700/40">
+                  <span class="text-[10px] text-zinc-500"><%= video.views_count %> views</span>
+                  <div class="flex items-center gap-2">
+                    <% if video.published? %>
+                      <%= button_to "↓", unpublish_admin_video_path(video), method: :patch,
+                          title: "Unpublish",
+                          class: "text-yellow-500 text-xs font-bold bg-transparent border-0 cursor-pointer leading-none" %>
+                    <% elsif !video.processing? %>
+                      <%= button_to "↑", publish_admin_video_path(video), method: :patch,
+                          title: "Publish",
+                          class: "text-red-400 text-xs font-bold bg-transparent border-0 cursor-pointer leading-none" %>
+                    <% end %>
+                    <%= link_to "Edit", edit_admin_video_path(video), class: "text-zinc-500 hover:text-white text-[10px] font-semibold" %>
+                    <%= button_to "✕", admin_video_path(video), method: :delete,
+                        title: "Delete",
+                        data: { turbo_confirm: "Delete \"#{video.title}\"?" },
+                        class: "text-red-400/60 hover:text-red-400 text-xs font-bold bg-transparent border-0 cursor-pointer leading-none" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%# Videos with no category (nil) %>
+    <% uncategorized = grouped[nil] || [] %>
+    <% if uncategorized.any? %>
+      <div class="mb-8">
+        <h2 class="text-sm font-bold text-white mb-4">Uncategorized</h2>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <% uncategorized.each do |video| %>
+            <div class="bg-zinc-800 rounded-xl overflow-hidden border border-zinc-700/40">
+              <div class="bg-zinc-900 flex items-center justify-center" style="aspect-ratio:16/9;">
+                <svg class="w-8 h-8 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.069A1 1 0 0121 8.882v6.236a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+                </svg>
+              </div>
+              <div class="p-3">
+                <p class="text-white text-xs font-semibold truncate"><%= video.title %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 </div>
 
 <div class="mt-4"><%= paginate @videos %></div>
+
+<script>
+  function setView(v) {
+    const listEl = document.getElementById('view-list');
+    const gridEl = document.getElementById('view-grid');
+    const btnList = document.getElementById('btn-list');
+    const btnGrid = document.getElementById('btn-grid');
+
+    if (v === 'grid') {
+      listEl.classList.add('hidden');
+      gridEl.classList.remove('hidden');
+      btnGrid.classList.add('bg-zinc-700', 'text-white');
+      btnGrid.classList.remove('text-zinc-500');
+      btnList.classList.remove('bg-zinc-700', 'text-white');
+      btnList.classList.add('text-zinc-500');
+    } else {
+      gridEl.classList.add('hidden');
+      listEl.classList.remove('hidden');
+      btnList.classList.add('bg-zinc-700', 'text-white');
+      btnList.classList.remove('text-zinc-500');
+      btnGrid.classList.remove('bg-zinc-700', 'text-white');
+      btnGrid.classList.add('text-zinc-500');
+    }
+    localStorage.setItem('adminVideoView', v);
+  }
+
+  // Restore saved preference
+  document.addEventListener('DOMContentLoaded', function() {
+    const saved = localStorage.getItem('adminVideoView') || 'list';
+    setView(saved);
+  });
+</script>

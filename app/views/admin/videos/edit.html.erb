@@ -57,8 +57,20 @@
     </div>
 
     <div>
+      <p class="block text-sm font-medium text-gray-300 mb-2">Thumbnail</p>
+      <% if @video.thumbnail.present? %>
+        <div class="relative rounded-xl overflow-hidden mb-3" style="aspect-ratio:16/9; background:#000;">
+          <img src="<%= @video.thumbnail.medium.url %>" class="w-full h-full object-cover" alt="Current thumbnail" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+          <span class="absolute bottom-2 left-3 text-xs text-white/60 font-medium">Current thumbnail</span>
+        </div>
+      <% else %>
+        <div class="rounded-xl mb-3 flex items-center justify-center text-zinc-600 text-xs border border-zinc-700 border-dashed" style="aspect-ratio:16/9; background:#0d0d0d;">
+          No thumbnail yet — one will be extracted automatically when the video processes.
+        </div>
+      <% end %>
       <%= f.hidden_field :thumbnail_cache %>
-      <%= f.label :thumbnail, "Replace Thumbnail (optional)", class: "block text-sm font-medium text-gray-300 mb-2" %>
+      <%= f.label :thumbnail, "Replace Thumbnail (optional)", class: "block text-xs text-zinc-500 mb-2 mt-1" %>
       <%= f.file_field :thumbnail, accept: "image/*",
           class: "block w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-zinc-700 file:text-gray-300 hover:file:bg-gray-700" %>
     </div>
