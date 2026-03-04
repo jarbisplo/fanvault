@@ -51,31 +51,31 @@
 
           <!-- Preview state (hidden until file selected) -->
           <div id="upload-preview" class="hidden w-full">
-            <!-- Frame preview -->
             <div class="relative w-full" style="aspect-ratio: 16/9; background: #000;">
-              <canvas id="frame-canvas" class="w-full h-full object-cover"></canvas>
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-              <!-- File info overlay -->
-              <div class="absolute bottom-0 left-0 right-0 px-4 py-3">
+              <!-- Native video element — browser renders first frame automatically -->
+              <video id="upload-video-preview"
+                     class="w-full h-full object-cover"
+                     muted playsinline preload="metadata"
+                     style="pointer-events: none;"></video>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>
+              <!-- File info -->
+              <div class="absolute bottom-0 left-0 right-0 px-4 py-3 pointer-events-none">
                 <p id="file-name" class="text-white text-sm font-bold truncate"></p>
                 <p id="file-meta" class="text-white/50 text-xs mt-0.5"></p>
               </div>
               <!-- Green check -->
-              <div class="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center bg-green-500/90">
+              <div class="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center pointer-events-none"
+                   style="background: rgba(34,197,94,0.9);">
                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
               </div>
             </div>
-            <p class="text-center text-zinc-500 text-xs py-2">Tap to change file</p>
+            <p class="text-center text-zinc-500 text-xs py-2">Tap to choose a different file</p>
           </div>
 
           <%= f.file_field :video_file, accept: "video/*", class: "hidden", id: "video-input" %>
         </label>
-
-        <!-- Hidden video element for frame extraction -->
-        <video id="frame-extractor" class="hidden" muted playsinline preload="metadata"></video>
-        <canvas id="frame-canvas-offscreen" class="hidden"></canvas>
       </div>
 
       <!-- Free toggle -->
@@ -107,46 +107,33 @@
     const file = e.target.files[0];
     if (!file) return;
 
-    const zone      = document.getElementById('video-drop-zone');
+    const zone        = document.getElementById('video-drop-zone');
     const placeholder = document.getElementById('upload-placeholder');
-    const preview   = document.getElementById('upload-preview');
-    const nameEl    = document.getElementById('file-name');
-    const metaEl    = document.getElementById('file-meta');
-    const canvas    = document.getElementById('frame-canvas');
-    const extractor = document.getElementById('frame-extractor');
+    const preview     = document.getElementById('upload-preview');
+    const nameEl      = document.getElementById('file-name');
+    const metaEl      = document.getElementById('file-meta');
+    const videoEl     = document.getElementById('upload-video-preview');
 
-    // File size label
+    // Show filename + size right away
     const mb = (file.size / 1024 / 1024).toFixed(1);
     nameEl.textContent = file.name;
     metaEl.textContent = mb + ' MB';
 
-    // Show preview, hide placeholder
+    // Load video for native first-frame preview + duration
+    const url = URL.createObjectURL(file);
+    videoEl.src = url;
+    videoEl.load();
+    videoEl.addEventListener('loadedmetadata', function() {
+      const dur = Math.round(videoEl.duration || 0);
+      const mins = Math.floor(dur / 60);
+      const secs = (dur % 60).toString().padStart(2, '0');
+      if (dur > 0) metaEl.textContent = mb + ' MB · ' + mins + ':' + secs;
+    }, { once: true });
+
+    // Swap idle → preview, green border
     placeholder.classList.add('hidden');
     preview.classList.remove('hidden');
-    zone.classList.remove('border-zinc-700');
-    zone.classList.add('border-green-500/60');
-
-    // Extract a frame at ~2s using canvas
-    const url = URL.createObjectURL(file);
-    extractor.src = url;
-    extractor.currentTime = 0;
-
-    extractor.addEventListener('loadedmetadata', function() {
-      const dur = extractor.duration;
-      const seek = Math.min(2, dur * 0.05);
-      extractor.currentTime = seek;
-      // Append duration to meta
-      const mins = Math.floor(dur / 60);
-      const secs = Math.floor(dur % 60).toString().padStart(2,'0');
-      metaEl.textContent = mb + ' MB · ' + mins + ':' + secs;
-    }, { once: true });
-
-    extractor.addEventListener('seeked', function() {
-      canvas.width  = extractor.videoWidth  || 640;
-      canvas.height = extractor.videoHeight || 360;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(extractor, 0, 0, canvas.width, canvas.height);
-      URL.revokeObjectURL(url);
-    }, { once: true });
+    zone.style.borderColor = 'rgba(34,197,94,0.6)';
+    zone.style.borderStyle = 'solid';
   });
 </script>

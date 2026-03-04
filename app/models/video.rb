@@ -30,7 +30,7 @@ class Video < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 120 }
   validates :description, length: { maximum: 2000 }
-  validates :video_file, presence: true
+  validates :video_file, presence: true, on: :create
   validates :creator, presence: true
 
   scope :published,    -> { where(status: :published) }
